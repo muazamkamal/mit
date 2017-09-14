@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import font
+import Tkinter as tk
 import sqlite3
 
 class Management(tk.Tk):
