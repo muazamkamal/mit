@@ -30,10 +30,10 @@ def readDB():
     global index
     studentdb = open("testdb", "r")
     temp = studentdb.readlines()
-    #print temp
+
     StudentData = []
     StudentNameArray = []
-    #print len(temp)
+
     for i in range(0, len(temp)): #Loop to split individual array
         StudentData.append(temp[i].replace("\n", " ").split(", "))
 
@@ -63,6 +63,15 @@ def paymentDB() :
     print "The outstanding balance for this student is RM ",StudentData[index][5]
     outstanding = str(StudentData[index][5])
 
+    studentdb = open("testdb", "w")
+    for i in range(0, len(StudentData)):
+        for j in range(0, 6):
+            studentdb.write(str(StudentData[i][j]) + ", ")
+
+        studentdb.write("\n")
+
+    studentdb.close()
+
     # studentdb = open("testdb", "a")
     # StudentName = StudentData[index][0]
     # Contact = StudentData[index][1]
@@ -75,31 +84,7 @@ def paymentDB() :
     #
     # for data in StudentInput:
     #     studentdb.write(data + ", ")
-    #
 
-    studentdb = open("testdb", "w")
-    for i in range(0, len(StudentData)):
-        for j in range(0, 6):
-            studentdb.write(str(StudentData[i][j]) + ", ")
-
-        studentdb.write("\n")
-
-
-
-    studentdb.write("\n")
-    studentdb.close()
-
-
-
-
-
-
-
-
-
-
-
-
-#writeDB()
+# writeDB()
 readDB()
-paymentDB()
+# paymentDB()
