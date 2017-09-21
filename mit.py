@@ -1,5 +1,6 @@
 import Tkinter as tk
-import sqlite3
+
+
 
 class Management(tk.Tk):
 
@@ -46,7 +47,7 @@ class MainMenu(tk.Frame):
         MenuTitle = tk.Label(self, text="Main Menu", font = 14, bg = "white")
         MenuTitle.pack(padx = 10, pady = 10)
 
-        tutor_button = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(Tutor), bg = "white")
+        tutor_button = tk.Button(self, text="Student", command = lambda: controller.show_frame(Tutor), bg = "white")
         tutor_button.place(relx = 0.5, rely = 0.5, anchor = "center")
 
 class Tutor(tk.Frame):
@@ -57,25 +58,36 @@ class Tutor(tk.Frame):
         self.configure(bg = "white")
         self.controller = controller
 
-        conn = sqlite3.connect("Tutor.db")
-        c = conn.cursor()
-
         TutorTitle = tk.Label(self, text="Tutor List", font = 14, bg = "white")
         TutorTitle.pack(padx = 10, pady = 10)
 
-        c.execute("SELECT Name FROM Tutor ORDER BY Name ASC")
 
-        tutor_list = c.fetchall()
 
-        tutor_name = []
+        global StudentData
+        global StudentNameArray
+        global index
+        global j
+        studentdb = open("testdb", "r")
+        temp = studentdb.readlines()
+        #print temp
+        StudentData = []
+        StudentNameArray = []
+
+        #print len(temp)
+        for i in range(0, len(temp)): #Loop to split individual array
+            StudentData.append(temp[i].replace("\n", " ").split(", "))
+
+
 
         self.tutor_list_box = tk.Listbox(self, bg = "white")
 
-        for i in range(0, len(tutor_list)):
+        
+        for j in range(0,len(StudentData)):
             # tutor_name.append(tk.Label(self, text=tutor_list[i][0]))
             # tutor_name[i].pack(side = "top")
-            tutor_name.append(tutor_list[i][0])
-            self.tutor_list_box.insert("end", tutor_list[i][0])
+            StudentNameArray.append(StudentData[j][0])
+            self.tutor_list_box.insert("end", StudentData[j][0])
+
 
         self.tutor_list_box.pack()
 
@@ -97,26 +109,31 @@ class TutorDetail(tk.Frame):
 
         tutor_page = self.controller.get_page(Tutor)
 
-        print tutor_page.tutor_list_box.get("active")
-        SelectedTutor = "Raimi"
+        
+        NAMETOSEARCH = "Shafiq"
 
-        conn = sqlite3.connect("Tutor.db")
-        c = conn.cursor()
-
-        DetailTitle = tk.Label(self, text= SelectedTutor + "'s Details", font = 14, bg = "white")
+        DetailTitle = tk.Label(self, text= NAMETOSEARCH + "'s Details", font = 14, bg = "white")
         DetailTitle.pack(padx = 10, pady = 10)
 
-        c.execute("SELECT Name, Contact, Subject FROM Tutor WHERE Name=?", (SelectedTutor,))
+    
+        #Checking index number
+        for index in range(0, len(StudentNameArray)):
+            if StudentNameArray[index] == NAMETOSEARCH:
+                break
 
-        TName, TContact, TSubject = c.fetchall()[0]
-
-        Name = tk.Label(self, text="Name: " + TName, bg = "white")
-        Contact = tk.Label(self, text="Contact: " + TContact, bg = "white")
-        Subject = tk.Label(self, text="Subject: " + TSubject, bg = "white")
+        Name = tk.Label(self, text="Name: " + StudentData[index][0], bg = "white")
+        Contact = tk.Label(self, text="Contact: " + StudentData[index][1], bg = "white")
+        EContact = tk.Label(self, text="Emergency Contact: " + StudentData[index][2], bg = "white")
+        Subject = tk.Label(self, text="Subject: " + StudentData[index][3], bg = "white")
+        TuitionFees = tk.Label(self, text="Tuition Fees: RM" + StudentData[index][4], bg = "white")
+        Outstanding = tk.Label(self, text="Outstanding Fees: RM" + StudentData[index][5], bg = "white")
 
         Name.pack(side = "top")
+        EContact.pack(side = "top")
         Contact.pack(side = "top")
         Subject.pack(side = "top")
+        TuitionFees.pack(side = "top")
+        Outstanding.pack(side = "top")
 
         menu_button = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menu_button.pack(side = "bottom", padx = 10, pady = 10)
