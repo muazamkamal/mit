@@ -49,7 +49,10 @@ class MainMenu(tk.Frame):
 
         tutor_button = tk.Button(self, text="Student", command = lambda: controller.show_frame(Tutor), bg = "white")
         tutor_button.place(relx = 0.5, rely = 0.5, anchor = "center")
-
+		
+        # quit_button = tk.Button(self, text="Quit", command = quit, bg = "white")
+        # quit_button.pack(side = "bottom")
+        
 class Tutor(tk.Frame):
 
     def __init__(self, parent, controller):
