@@ -77,7 +77,10 @@ class Student(tk.Frame):
         studentdb = open("testdb", "r")
         temp = studentdb.readlines() # Temporary variable to store data read from database
 
-        global StudentName # To be accesed by "StudentDetail" class
+        # To be accesed by "StudentDetail" class
+        global StudentData
+        global StudentName
+
         StudentData = [] # All the students including their data
         StudentName = [] # All of the students names only
 
