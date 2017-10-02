@@ -1,7 +1,7 @@
 def writeDB():
 
     num = input("Please enter number of students: ")
-    studentdb = open("testdb", "a")
+    studentdb = open("testdb", "a+")
     for i in range(0, num):
         print "\nData for student number ", i + 1
         StudentName = raw_input("\nPlease enter name: ")
@@ -15,14 +15,14 @@ def writeDB():
         Outstanding = float(Outstanding)
         TuitionFees = str(TuitionFees)
         Outstanding = str(Outstanding)
-
+        
         StudentInput = [StudentName, Contact, EContact, Subject, TuitionFees, Outstanding]
 
         for data in StudentInput:
             studentdb.write(data + ", ")
 
         studentdb.write("\n")
-
+        
 
 def readDB():
 
@@ -30,13 +30,13 @@ def readDB():
     global index
     studentdb = open("testdb", "r")
     temp = studentdb.readlines()
-
+    #print temp
     StudentData = []
     StudentNameArray = []
-
+    #print len(temp)
     for i in range(0, len(temp)): #Loop to split individual array
         StudentData.append(temp[i].replace("\n", " ").split(", "))
-
+    print StudentData
     for j in range(0,len(StudentData)):
         print StudentData[j][0]
         StudentNameArray.append(StudentData[j][0])
@@ -54,14 +54,30 @@ def readDB():
     print "Tuition Fees : RM",StudentData[index][4]
     print "Outstanding : RM",StudentData[index][5]
 
-def paymentDB() :
+def PaymentDB() :
 
     OutstandingMonths = float(StudentData[index][5])/ float(StudentData[index][4])
     print "This student has outstanding fees for ",OutstandingMonths," months !"
-    Payment =input("Please enter how much this student wants to pay: ")
-    StudentData[index][5] = float(StudentData[index][5])- float(Payment)
+    payment =input("Please enter how much this student wants to pay: ")
+    StudentData[index][5] = float(StudentData[index][5])- float(payment)
     print "The outstanding balance for this student is RM ",StudentData[index][5]
-    outstanding = str(StudentData[index][5])
+    StudentData[index][5] = str(StudentData[index][5])
+    
+
+    studentdb = open("testdb", "a")
+    StudentName = StudentData[index][0]
+    Contact = StudentData[index][1]
+    EContact = StudentData[index][2]
+    Subject = StudentData[index][3]
+    TuitionFees = StudentData[index][4]
+    Outstanding = StudentData[index][5]
+
+    StudentInput = [StudentName, Contact, EContact, Subject, TuitionFees, Outstanding]
+
+    for data in StudentInput:
+        studentdb.write(data + ", ")
+
+    studentdb.write("\n")
 
     studentdb = open("testdb", "w")
     for i in range(0, len(StudentData)):
@@ -72,19 +88,17 @@ def paymentDB() :
 
     studentdb.close()
 
-    # studentdb = open("testdb", "a")
-    # StudentName = StudentData[index][0]
-    # Contact = StudentData[index][1]
-    # EContact = StudentData[index][2]
-    # Subject = StudentData[index][3]
-    # TuitionFees = StudentData[index][4]
-    # Outstanding = outstanding
-    #
-    # StudentInput = [StudentName, Contact, EContact, Subject, TuitionFees, Outstanding]
-    #
-    # for data in StudentInput:
-    #     studentdb.write(data + ", ")
 
-# writeDB()
+
+    
+    
+               
+
+
+
+
+
+
+#writeDB()
 readDB()
-# paymentDB()
+PaymentDB()
