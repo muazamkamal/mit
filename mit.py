@@ -1,4 +1,5 @@
 import Tkinter as tk
+import datetime as dt
 
 class Management(tk.Tk):
 
@@ -7,7 +8,7 @@ class Management(tk.Tk):
 
         # Configuring windows properties
         self.title("M.I.T")
-        self.geometry("480x480")
+        self.geometry("640x640")
         self.resizable(False,False)
 
         #Variables of all the dynamic StringVar
@@ -23,21 +24,35 @@ class Management(tk.Tk):
         usrnmREG = tk.StringVar()
         pswdREG = tk.StringVar()
 
-        global TitleOfStud
+        global NameOfStudREG
+        global ConOfStudREG
+        global EmConOfStudREG
+        global AddMathREG
+        global PhyREG
+        global ChemREG
+
+        NameOfStudREG = tk.StringVar()
+        ConOfStudREG = tk.StringVar()
+        EmConOfStudREG = tk.StringVar()
+        AddMathREG = tk.IntVar()
+        PhyREG = tk.IntVar()
+        ChemREG = tk.IntVar()
+
         global NameOfStud
         global ConOfStud
         global EmConOfStud
         global SubOfStud
         global FeeOfStud
         global OutFeeOfStud
+        global REGdateStud
 
-        TitleOfStud = tk.StringVar()
         NameOfStud = tk.StringVar()
         ConOfStud = tk.StringVar()
         EmConOfStud = tk.StringVar()
         SubOfStud = tk.StringVar()
         FeeOfStud = tk.StringVar()
         OutFeeOfStud = tk.StringVar()
+        REGdateStud = tk.StringVar()
 
         # Setting up frames or pages
         global container
@@ -49,7 +64,7 @@ class Management(tk.Tk):
         # Layering the frames and bringing up "MainMenu" to the top
         self.frames = {}
 
-        for F in (Welcome, Login, Register, MainMenu, Student, StudentDetail):
+        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row = 0, column = 0, sticky = "nsew")
@@ -304,11 +319,178 @@ class MainMenu(tk.Frame):
         MenuTitle = tk.Label(self, text="Main Menu", font = 22, bg = "white")
         MenuTitle.pack(padx = 10, pady = 10)
 
+        registrationButton = tk.Button(self, text="Registration", command = lambda: controller.show_frame(Registration), bg = "white")
+        registrationButton.pack(padx = 10, pady = 10)
+
         studentButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(Student), bg = "white")
-        studentButton.place(relx = 0.5, rely = 0.5, anchor = "center")
+        studentButton.pack(padx = 10, pady = 10)
 
         quitButton = tk.Button(self, text="Quit", command = lambda: quit(), bg = "white")
         quitButton.pack(side = "bottom", pady = 10)
+
+# Student/Tutor Registration
+class Registration(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.configure(bg = "white")
+        self.controller = controller
+
+        RegistrationTitle = tk.Label(self, text="Registration", font = 22, bg = "white")
+        RegistrationTitle.pack(padx = 10, pady = 10)
+
+        StudentRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(StudentRegistration), bg = "white")
+        StudentRegistrationButton.pack(side = "top", padx = 10, pady = 10)
+
+        # TutorRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(TutorRegistration), bg = "white")
+        # TutorRegistrationButton.pack(side = "top", padx = 10, pady = 10)
+
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
+        backButton.pack(side = "bottom", padx = 10, pady = 10)
+
+# Student Registration
+class StudentRegistration(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.configure(bg = "white")
+        self.controller = controller
+
+        RegistrationTitle = tk.Label(self, text="Student Registration", font = 22, bg = "white")
+        RegistrationTitle.pack(padx = 10, pady = 10)
+
+        NameOfStudREGLabel = tk.Label(self, text = "Name", bg = "white")
+        NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG)
+        ConOfStudREGLabel = tk.Label(self, text = "Contact", bg = "white")
+        ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG)
+        EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact", bg = "white")
+        EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG)
+        SubOfStudREGLabel = tk.Label(self, text = "Subject", bg = "white")
+
+        checkbuttonAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=AddMathREG, bg = "white")
+        checkbuttonPhy = tk.Checkbutton(self, text="Physics", variable=PhyREG, bg = "white")
+        checkbuttonChem = tk.Checkbutton(self, text="Chemistry", variable=ChemREG, bg = "white")
+
+        NameOfStudREGLabel.pack(padx = 10, pady = 8)
+        NameOfStudREGEntry.pack(padx = 10, pady = 8)
+        ConOfStudREGLabel.pack(padx = 10, pady = 8)
+        ConOfStudREGEntry.pack(padx = 10, pady = 8)
+        EmConOfStudREGLabel.pack(padx = 10, pady = 8)
+        EmConOfStudREGEntry.pack(padx = 10, pady = 8)
+        SubOfStudREGLabel.pack(padx = 10, pady = 8)
+        checkbuttonAddMath.pack(padx = 10, pady = 5)
+        checkbuttonPhy.pack(padx = 10, pady = 5)
+        checkbuttonChem.pack(padx = 10, pady = 5)
+
+        saveButton = tk.Button(self, text="Save", command = lambda: self.registerstudent(), bg = "white")
+        saveButton.pack(padx = 10, pady = 10)
+
+        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
+        menuButton.pack(side = "bottom", padx = 10, pady = 10)
+
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
+        backButton.pack(side = "bottom", padx = 10, pady = 10)
+
+    def registerstudent(self):
+        registerName = NameOfStudREG.get()
+        registerCon = ConOfStudREG.get()
+        registerEm = EmConOfStudREG.get()
+        registerAddMath = AddMathREG.get()
+        registerPhy = PhyREG.get()
+        registerChem = ChemREG.get()
+        registerFees = 0.0
+
+        if (
+            registerName == "" or registerCon == "" or
+            registerEm == "" or
+            (registerAddMath == 0 and registerPhy == 0 and
+            registerChem == 0)
+            ):
+            # print "we not coo"
+            #  Error if incomplete form
+            errorINCOMP = tk.Toplevel(bg = "white")
+            errorINCOMP.grab_set()
+            errorINCOMP.title("Registration Error")
+            errorINCOMP.geometry("250x100")
+            errorINCOMP.resizable(False,False)
+
+            errorINCOMPmsg = tk.Label(errorINCOMP, text = "Please complete the form!", bg = "white")
+            errorINCOMPmsg.pack(padx = 10, pady = 10)
+
+            dismissButton = tk.Button(errorINCOMP, text = "Dismiss", bg = "white", command = errorINCOMP.destroy)
+            dismissButton.pack(padx = 10, pady = 10)
+
+            self.wait_window(errorINCOMP)
+            errorINCOMP.grab_release()
+
+        else:
+            # print "we coo"
+
+            if registerAddMath == 1:
+                registerFees += 55.0
+                # print "addmath chosen"
+
+            if registerPhy == 1:
+                # print "physics chosen"
+                registerFees += 40.0
+
+            if registerChem == 1:
+                # print "chemistry chosen"
+                registerFees += 50.0
+
+            registerOutFees = registerFees
+
+            temp = dt.datetime.now()
+            today = "%s/%s/%s" % (temp.day, temp.month, temp.year)
+
+            registerDate = today
+
+            registerInput = [registerName, registerCon, registerEm, str(registerFees), str(registerOutFees), today, ]
+
+            if registerAddMath == 1:
+                registerInput.append("Additional Mathematics")
+
+            if registerPhy == 1:
+                registerInput.append("Physics")
+
+            if registerChem == 1:
+                registerInput.append("Chemistry")
+
+            studentREGDB = open("studentDB", "a+")
+
+            for data in registerInput:
+                studentREGDB.write(data + ", ")
+
+            studentREGDB.write("\n")
+
+            studentREGDB.close()
+
+            # Display success student registration message
+            successStudREG = tk.Toplevel(bg = "white")
+            successStudREG.grab_set()
+            successStudREG.title("Registration Successful")
+            successStudREG.resizable(False,False)
+
+            successStudREGmsg = tk.Label(successStudREG, text = "Student \"%s\" has been successfully registered!" % registerName, bg = "white")
+            successStudREGmsg.pack(padx = 10, pady = 10)
+
+            dismissButton = tk.Button(successStudREG, text = "Dismiss", bg = "white", command = successStudREG.destroy)
+            dismissButton.pack(padx = 10, pady = 10)
+
+            self.wait_window(successStudREG)
+            successStudREG.grab_release()
+
+            NameOfStudREG.set("")
+            ConOfStudREG.set("")
+            EmConOfStudREG.set("")
+            AddMathREG.set("")
+            PhyREG.set("")
+            ChemREG.set("")
+
+            self.controller.show_frame(MainMenu)
+
+# Tutor Registration
+# class TutorRegistration(tk.Frame):
 
 # Student frame
 class Student(tk.Frame):
@@ -323,7 +505,7 @@ class Student(tk.Frame):
         TutorTitle.pack(padx = 10, pady = 10)
 
         # Opening database
-        studentdb = open("testdb", "r")
+        studentdb = open("studentdb", "r")
         temp = studentdb.readlines() # Temporary variable to store data read from database
 
         # To be accesed by "StudentDetail" class
@@ -349,13 +531,12 @@ class Student(tk.Frame):
         # Assign a method for mouse click
         self.student_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
-        menuButton.pack(side = "bottom", padx = 10, pady = 10)
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
+        backButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
         selected = self.student_list_box.get(self.student_list_box.curselection()[0])
-        TitleOfStud.set(selected)
 
         # Getting the index of the selected name
         for index in range(len(StudentName)):
@@ -368,6 +549,7 @@ class Student(tk.Frame):
         EmConOfStud.set("Emergency Contact: %s" % StudentData[index][2])
         FeeOfStud.set("Fees: %s" % StudentData[index][3])
         OutFeeOfStud.set("Outstanding Fees: %s" % StudentData[index][4])
+        REGdateStud.set("Date registered: %s" % StudentData[index][5])
 
         # Checking if multiple subject present
         if len(StudentData[index]) == 10:
@@ -388,7 +570,7 @@ class StudentDetail(tk.Frame):
         self.configure(bg = "white")
         self.controller = controller
 
-        DetailTitle = tk.Label(self, textvariable = TitleOfStud, font = 22, bg = "white")
+        DetailTitle = tk.Label(self, textvariable = NameOfStud, font = 22, bg = "white")
         DetailTitle.pack(padx = 10, pady = 10)
 
         Name = tk.Label(self, textvariable = NameOfStud, bg = "white")
@@ -397,6 +579,7 @@ class StudentDetail(tk.Frame):
         Subject = tk.Label(self, textvariable = SubOfStud, bg = "white")
         TuitionFees = tk.Label(self, textvariable = FeeOfStud, bg = "white")
         Outstanding = tk.Label(self, textvariable = OutFeeOfStud, bg = "white")
+        DateRegister = tk.Label(self, textvariable = REGdateStud, bg = "white")
 
         Name.pack(side = "top")
         Contact.pack(side = "top")
@@ -404,6 +587,7 @@ class StudentDetail(tk.Frame):
         Subject.pack(side = "top")
         TuitionFees.pack(side = "top")
         Outstanding.pack(side = "top")
+        DateRegister.pack(side = "top")
 
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
