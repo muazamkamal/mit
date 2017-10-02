@@ -11,7 +11,6 @@ class Management(tk.Tk):
         self.resizable(False,False)
 
         #Variables of all the dynamic StringVar
-
         global usrnm
         global pswd
 
@@ -88,6 +87,9 @@ class Welcome(tk.Frame):
 
         registerButton = tk.Button(self, text="Register", command = lambda: controller.show_frame(Register), bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
+
+        testButton = tk.Button(self, text="Test", command = lambda: controller.show_frame(MainMenu), bg = "white")
+        testButton.pack(side = "top", padx = 10, pady = 10)
 
         quitButton = tk.Button(self, text="Quit", command = lambda: quit(), bg = "white")
         quitButton.pack(side = "bottom", pady = 10)
@@ -364,9 +366,16 @@ class Student(tk.Frame):
         NameOfStud.set("Name: %s" % StudentData[index][0])
         ConOfStud.set("Contact: %s" % StudentData[index][1])
         EmConOfStud.set("Emergency Contact: %s" % StudentData[index][2])
-        SubOfStud.set("Subject: %s" % StudentData[index][3])
-        FeeOfStud.set("Fees: %s" % StudentData[index][4])
-        OutFeeOfStud.set("Outstanding Fees: %s" % StudentData[index][5])
+        FeeOfStud.set("Fees: %s" % StudentData[index][3])
+        OutFeeOfStud.set("Outstanding Fees: %s" % StudentData[index][4])
+
+        # Checking if multiple subject present
+        if len(StudentData[index]) == 10:
+            SubOfStud.set("Subject: %s, %s, %s" % (StudentData[index][6].replace(",", ""), StudentData[index][7], StudentData[index][8]) )
+        elif len(StudentData[index]) == 9:
+            SubOfStud.set("Subject: %s, %s" % (StudentData[index][6], StudentData[index][7]))
+        elif len(StudentData[index]) == 8:
+            SubOfStud.set("Subject: %s" % StudentData[index][6])
 
         # Display the StudentDetail frame
         self.controller.show_frame(StudentDetail)
