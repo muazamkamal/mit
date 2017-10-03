@@ -487,7 +487,7 @@ class StudentRegistration(tk.Frame):
             PhyREG.set("")
             ChemREG.set("")
 
-            self.controller.show_frame(MainMenu)
+            self.controller.quit()
 
 # Tutor Registration
 # class TutorRegistration(tk.Frame):
