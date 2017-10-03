@@ -37,7 +37,6 @@ class Management(tk.Tk):
         AddMathREG = tk.IntVar()
         PhyREG = tk.IntVar()
         ChemREG = tk.IntVar()
-        
 
         global NameOfStud
         global ConOfStud
@@ -46,8 +45,6 @@ class Management(tk.Tk):
         global FeeOfStud
         global OutFeeOfStud
         global REGdateStud
-        global payment
-        global index
 
         NameOfStud = tk.StringVar()
         ConOfStud = tk.StringVar()
@@ -56,7 +53,10 @@ class Management(tk.Tk):
         FeeOfStud = tk.StringVar()
         OutFeeOfStud = tk.StringVar()
         REGdateStud = tk.StringVar()
-        payment = tk.StringVar()
+        
+        global payment
+        
+        payment = tk.IntVar()
 
         # Setting up frames or pages
         global container
@@ -68,7 +68,7 @@ class Management(tk.Tk):
         # Layering the frames and bringing up "MainMenu" to the top
         self.frames = {}
 
-        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail, Payment):
+        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row = 0, column = 0, sticky = "nsew")
@@ -79,7 +79,7 @@ class Management(tk.Tk):
     def show_frame(self, cont):
 
         # Refreshing/reloading the called frame before bringing it up
-        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail, Payment):
+        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail):
             if cont == F:
                 F(container, self)
 
@@ -104,7 +104,7 @@ class Welcome(tk.Frame):
         loginButton = tk.Button(self, text="Login", command = lambda: controller.show_frame(Login), bg = "white")
         loginButton.pack(side = "top", padx = 10, pady = 10)
 
-        registerButton = tk.Button(self, text="Register", command = lambda: controller.show_frame(Register), bg = "white")
+        registerButton = tk.Button(self, text="Sign Up", command = lambda: controller.show_frame(Register), bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
 
         testButton = tk.Button(self, text="Test", command = lambda: controller.show_frame(MainMenu), bg = "white")
@@ -346,6 +346,7 @@ class Registration(tk.Frame):
         StudentRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(StudentRegistration), bg = "white")
         StudentRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
+
         # TutorRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(TutorRegistration), bg = "white")
         # TutorRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
@@ -363,7 +364,7 @@ class StudentRegistration(tk.Frame):
         RegistrationTitle = tk.Label(self, text="Student Registration", font = 22, bg = "white")
         RegistrationTitle.pack(padx = 10, pady = 10)
 
-        NameOfStudREGLabel = tk.Label(self, text = "Name", bg = "white")
+        NameOfStudREGLabel = tk.Label(self, text = " Full Name", bg = "white")
         NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG)
         ConOfStudREGLabel = tk.Label(self, text = "Contact", bg = "white")
         ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG)
@@ -541,11 +542,11 @@ class Student(tk.Frame):
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
-        
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
         selected = self.student_list_box.get(self.student_list_box.curselection()[0])
 
         # Getting the index of the selected name
+        global index
         for index in range(len(StudentName)):
             if StudentName[index] == selected:
                 break
@@ -557,7 +558,7 @@ class Student(tk.Frame):
         FeeOfStud.set("Fees: %s" % StudentData[index][3])
         OutFeeOfStud.set("Outstanding Fees: %s" % StudentData[index][4])
         REGdateStud.set("Date registered: %s" % StudentData[index][5])
-
+        
         # Checking if multiple subject present
         if len(StudentData[index]) == 11:
             SubOfStud.set("Subject: %s, %s, %s" % (StudentData[index][7].replace(",", ""), StudentData[index][8], StudentData[index][9]) )
@@ -596,7 +597,7 @@ class StudentDetail(tk.Frame):
         Outstanding.pack(side = "top")
         DateRegister.pack(side = "top")
         
-        PaymentButton = tk.Button(self, text="Payment", command = lambda: controller.show_frame(Payment), bg = "white")
+        PaymentButton = tk.Button(self, text="Payment", command = lambda: self.payment1(), bg = "white")
         PaymentButton.pack(padx = 10, pady = 10)
 
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
@@ -604,59 +605,72 @@ class StudentDetail(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Student), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-#Payment frame
-class Payment(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-
-        self.configure(bg = "white")
-        self.controller = controller
         
-        PaymentTitle = tk.Label(self, text= "Payment", font = 22, bg = "white")
-        PaymentTitle.pack(padx = 10, pady = 10)
+    def payment1(self):
+        # Display payment
+        paymentwindow = tk.Toplevel(bg = "white")
+        paymentwindow.grab_set()
+        paymentwindow.title("Payment")
+        paymentwindow.geometry("350x350")
+        paymentwindow.resizable(False,False)
         
-        #OutstandingMonths = float(StudentData[index][4])/ float(StudentData[index][3])
-        #Warning = tk.Label(self, text= "This student has outstanding fees for " + OutstandingMonths +" months !", bg = "white")
-        #paymentLabel = tk.Label(self, text = "payment", bg = "white")
-        #paymentEntry = tk.Entry(self,  width = 25, textvariable = payment)
+        OutstandingMonths = float(StudentData[index][4])/ float(StudentData[index][3])
+        Warning = tk.Label(paymentwindow, text ="This student has outstanding fees for %d months !" % OutstandingMonths, bg = "white")
+        Warning.pack(padx = 10, pady = 8)
+        paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white")
+        paymentLabel.pack(padx = 10, pady = 8)
+        paymentEntry = tk.Entry(paymentwindow, width = 10, textvariable = payment)
+        paymentEntry.pack(padx = 10, pady = 8)          
+        StudentData[index][4] = float(StudentData[index][4])- float(payment.get())
         
-        #StudentData[index][4] = float(StudentData[index][4])- float(payment)
-        #Balance = tk.Label(self, text ="The outstanding balance for this student is RM " + StudentData[index][4], bg = "white")
-        #StudentData[index][4] = str(StudentData[index][4])
+        payButton = tk.Button(paymentwindow, text = "Pay", command = lambda: paymentwindow.pay(), bg = "white"  )
+        payButton.pack(side = "bottom", padx = 10, pady = 10)
         
-        #Warning.pack(padx = 10, pady = 8)
-        #paymentLabel.pack(padx = 10, pady = 8)
-        #paymentEntry.pack(padx = 10, pady = 8)
-        #Balance.pack(padx = 10, pady = 8)
+        payment.set("")
+        
+        def pay(self):
+            Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white")
+            Balance.pack(padx = 10, pady = 8)
+            StudentData[index][4] = str(StudentData[index][4])
+           
+   
+            studentdb = open("studentDB", "a")
+            registerName = StudentData[index][0]
+            registerCon = StudentData[index][1]
+            registerEm = StudentData[index][2]
+            registerFees = StudentData[index][3]
+            registerOutFees = StudentData[index][4]
+            today = StudentData[index][5]
+            lastPaid=(str(temp.month))
+
+            registerInput = [registerName, registerCon, registerEm, str(registerFees), str(registerOutFees), today, lastPaid, ]
+
+            for data in registerInput:
+                studentdb.write(data + ", ")
+
+            studentdb.write("\n")
+
+            studentdb = open("studentDB", "w")
+            for i in range(0, len(StudentData)):
+                for j in range(0, 7):
+                    studentdb.write(str(StudentData[i][j]) + ", ")
+
+                studentdb.write("\n")
+
+            studentdb.close()
+            
+        self.wait_window(paymentwindow)
+        paymentwindow.grab_release()
+        self.controller.quit()
+        
+        
         
         
 
-        #studentdb = open("studentDB", "a")
-        #registerName = StudentData[index][0]
-        #registerCon = StudentData[index][1]
-        #registerEm = StudentData[index][2]
-        #registerFees = StudentData[index][3]
-        #registerOutFees = StudentData[index][4]
-        #today = StudentData[index][5]
-        #lastPaid=(str(temp.month))
 
-        #registerInput = [registerName, registerCon, registerEm, str(registerFees), str(registerOutFees), today, lastPaid, ]
-
-        #for data in registerInput:
-            #studentdb.write(data + ", ")
-
-        #studentdb.write("\n")
-
-        #studentdb = open("studentDB", "w")
-        #for i in range(0, len(StudentData)):
-            #for j in range(0, 7):
-                #studentdb.write(str(StudentData[i][j]) + ", ")
-
-            #studentdb.write("\n")
-
-        #studentdb.close()
         
         
+
 
 if __name__ == "__main__":
     management = Management()
