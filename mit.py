@@ -139,8 +139,6 @@ class Welcome(tk.Frame):
         registerButton = tk.Button(self, text="Sign Up", command = lambda: controller.show_frame(Register), bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
 
-        testButton = tk.Button(self, text="Test", command = lambda: controller.show_frame(MainMenu), bg = "white")
-        testButton.pack(side = "top", padx = 10, pady = 10)
 
         quitButton = tk.Button(self, text="Quit", command = lambda: quit(), bg = "white")
         quitButton.pack(side = "bottom", pady = 10)
@@ -590,8 +588,8 @@ class Student(tk.Frame):
         NameOfStud.set("Name: %s" % StudentData[index][0])
         ConOfStud.set("Contact: %s" % StudentData[index][1])
         EmConOfStud.set("Emergency Contact: %s" % StudentData[index][2])
-        FeeOfStud.set("Fees: %s" % StudentData[index][3])
-        OutFeeOfStud.set("Outstanding Fees: %s" % StudentData[index][4])
+        FeeOfStud.set("Fees: RM%s" % StudentData[index][3])
+        OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
         REGdateStud.set("Date registered: %s" % StudentData[index][5])
         
         # Checking if multiple subject present
@@ -699,15 +697,21 @@ class StudentDetail(tk.Frame):
 
                 studentdb.write("\n")
                 
+
             studentdb.close()
-            self.wait_window(paymentwindow)
-            paymentwindow.grab_release()
-            self.controller.quit()
+            quitButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, bg = "white")
+            quitButton.pack(side = "bottom", padx = 10, pady = 10)
+            
+
+            
             
         payButton = tk.Button(paymentwindow, text = "Pay", command = pay, bg = "white"  )
         payButton.pack(side = "bottom", padx = 10, pady = 10)
         
         payment.set("")
+        self.wait_window(paymentwindow)
+        paymentwindow.grab_release()
+        self.controller.quit()
 class TutorRegistration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -907,8 +911,8 @@ class Tutor(tk.Frame):
         NameOfTutor.set("Name: %s" % TutorData[counter][0])
         ConOfTutor.set("Contact: %s" % TutorData[counter][1])
         EmConOfTutor.set("Emergency Contact: %s" % TutorData[counter][2])
-        FeeOfTutor.set("Salary : %s" % TutorData[counter][3])
-        OutFeeOfTutor.set("Outstanding Salary: %s" % TutorData[counter][4])
+        FeeOfTutor.set("Salary : RM%s" % TutorData[counter][3])
+        OutFeeOfTutor.set("Outstanding Salary: RM%s" % TutorData[counter][4])
         REGdateTutor.set("Date registered: %s" % TutorData[counter][5])
         
         # Checking if multiple subject present
