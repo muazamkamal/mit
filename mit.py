@@ -269,7 +269,7 @@ class Register(tk.Frame):
         self.configure(bg = "white")
         self.controller = controller
 
-        RegisterTitle = tk.Label(self, text="Register", font = 22, bg = "white")
+        RegisterTitle = tk.Label(self, text="Sign Up", font = 22, bg = "white")
         RegisterTitle.pack(padx = 10, pady = 10)
 
         usernameREGLabel = tk.Label(self, text = "Username", bg = "white")
@@ -648,6 +648,8 @@ class StudentDetail(tk.Frame):
         paymentwindow.resizable(False,False)
         
         OutstandingMonths = float(StudentData[index][4])/ float(StudentData[index][3])
+        Outstanding = tk.Label(paymentwindow, textvariable = OutFeeOfStud, bg = "white")
+        Outstanding.pack(side = "top")
         Warning = tk.Label(paymentwindow, text ="This student has outstanding fees for %d months !" % OutstandingMonths, bg = "white")
         Warning.pack(padx = 10, pady = 8)
         paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white")
@@ -707,6 +709,7 @@ class StudentDetail(tk.Frame):
             
         payButton = tk.Button(paymentwindow, text = "Pay", command = pay, bg = "white"  )
         payButton.pack(side = "bottom", padx = 10, pady = 10)
+        
         
         payment.set("")
         self.wait_window(paymentwindow)
