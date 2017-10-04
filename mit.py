@@ -8,7 +8,7 @@ class Management(tk.Tk):
 
         # Configuring windows properties
         self.title("M.I.T")
-        self.geometry("640x640")
+        self.geometry("640x512")
         self.resizable(False,False)
 
         #Variables of all the dynamic StringVar
@@ -660,28 +660,8 @@ class StudentDetail(tk.Frame):
             Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white")
             Balance.pack(padx = 10, pady = 8)
 
-            studentdb = open("studentDB", "a")
-            updateName = StudentData[index][0]
-            updateCon = StudentData[index][1]
-            updateEm = StudentData[index][2]
-            updateFees = StudentData[index][3]
-            updateOutFees = StudentData[index][4]
-            today = StudentData[index][5]
-
             paydate = dt.datetime.now()
-            lastPaid=(str(paydate.month))
-
-            updateInput = [updateName, updateCon, updateEm, str(updateFees), str(updateOutFees), today, lastPaid]
-
-            if len(StudentData[index]) == 11:
-                updateInput.append(StudentData[index][7])
-                updateInput.append(StudentData[index][8])
-                updateInput.append(StudentData[index][9])
-            elif len(StudentData[index]) == 10:
-                updateInput.append(StudentData[index][7])
-                updateInput.append(StudentData[index][8])
-            elif len(StudentData[index]) == 9:
-                updateInput.append(StudentData[index][7])
+            StudentData[index][6] = str(paydate.month)
 
             studentdb = open("studentDB", "w")
             for i in range(len(StudentData)):
