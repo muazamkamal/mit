@@ -425,7 +425,7 @@ class StudentRegistration(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -571,7 +571,7 @@ class Student(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -636,7 +636,7 @@ class StudentDetail(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Student), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -767,7 +767,7 @@ class TutorRegistration(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -839,7 +839,7 @@ class TutorRegistration(tk.Frame):
             if registerTChem == 1:
                 registerInput.append("Chemistry")
 
-            tutorREGDB = open("TutorDB", "a+")
+            tutorREGDB = open("tutorDB", "a+")
 
             for data in registerInput:
                 tutorREGDB.write(data + ", ")
@@ -882,7 +882,7 @@ class Tutor(tk.Frame):
         TutorTitle.pack(padx = 10, pady = 10)
 
         # Opening database
-        tutordb = open("TutorDB", "r")
+        tutordb = open("tutorDB", "r")
         temp = tutordb.readlines() # Temporary variable to store data read from database
 
         # To be accesed by "StudentDetail" class
@@ -910,7 +910,7 @@ class Tutor(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -974,14 +974,14 @@ class TutorDetail(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Tutor), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
-        
+
         deleteButton = tk.Button(self, text="Delete Tutor", command = lambda: self.confirmdel(), bg = "white")
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
-        
-        
+
+
     def salarypage(self):
         # Display payment
         salarywindow = tk.Toplevel(bg = "white")
@@ -1007,7 +1007,7 @@ class TutorDetail(tk.Frame):
             paydate = dt.datetime.now()
             TutorData[counter][6] = str(paydate.month)
 
-            tutordb = open("TutorDB", "w")
+            tutordb = open("tutorDB", "w")
             for i in range(len(TutorData)):
                 for j in range(len(TutorData[i]) - 1):
                     tutordb.write(str(TutorData[i][j]) + ", ")
@@ -1052,7 +1052,7 @@ class TutorDetail(tk.Frame):
         noButton.pack(padx = 10, pady = 10)
 
     def delete(self):
-        tutordb = open("TutorDB", "w")
+        tutordb = open("tutorDB", "w")
 
         for i in range(len(TutorData)):
             if TutorData[i][0] != TutorData[counter][0]:
