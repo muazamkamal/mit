@@ -425,7 +425,7 @@ class StudentRegistration(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -560,12 +560,6 @@ class Student(tk.Frame):
         self.student_list_box = tk.Listbox(self, bg = "white")
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
-        # j = 0
-        # while (j <= (len(StudentData))):
-            # StudentName = StudentName +[StudentData[j][0]]
-            # self.student_list_box.insert("end", StudentData[j][0])
-            # j = j + 1
-            
         for j in range(len(StudentData)):
             StudentName.append(StudentData[j][0])
             self.student_list_box.insert("end", StudentData[j][0])
@@ -577,18 +571,18 @@ class Student(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
-        SearchStudent = self.student_list_box.get(self.student_list_box.curselection()[0])
+        selected = self.student_list_box.get(self.student_list_box.curselection()[0])
 
         # Getting the index of the selected name
         global index
         for index in range(len(StudentName)):
-            if StudentName[index] == SearchStudent:
+            if StudentName[index] == selected:
                 break
 
         # Individually set each of the details to the corresponding value from the StudentDate (with the help of index)
@@ -597,7 +591,7 @@ class Student(tk.Frame):
         EmConOfStud.set("Emergency Contact: %s" % StudentData[index][2])
         FeeOfStud.set("Fees: RM%s" % StudentData[index][3])
         OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
-        REGdateStud.set("Date Registered: %s" % StudentData[index][5])
+        REGdateStud.set("Date registered: %s" % StudentData[index][5])
 
         # Checking if multiple subject present
         if len(StudentData[index]) == 12:
@@ -642,7 +636,7 @@ class StudentDetail(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Student), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -670,8 +664,8 @@ class StudentDetail(tk.Frame):
             Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white")
             Balance.pack(padx = 10, pady = 8)
 
-            paymonth = dt.datetime.now()
-            StudentData[index][6] = str(paymonth.month)
+            paydate = dt.datetime.now()
+            StudentData[index][6] = str(paydate.month)
 
             studentdb = open("studentDB", "w")
             for i in range(len(StudentData)):
@@ -741,10 +735,6 @@ class TutorRegistration(tk.Frame):
         RegistrationTitle = tk.Label(self, text=" Tutor Registration", font = 22, bg = "white")
         RegistrationTitle.pack(padx = 10, pady = 10)
 
-
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
-        backButton.pack(side = "bottom", padx = 10, pady = 10)
-
         NameOfTutorREGLabel = tk.Label(self, text = " Full Name", bg = "white")
         NameOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = NameOfTutorREG)
         ConOfTutorREGLabel = tk.Label(self, text = "Contact", bg = "white")
@@ -773,7 +763,7 @@ class TutorRegistration(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -845,7 +835,7 @@ class TutorRegistration(tk.Frame):
             if registerTChem == 1:
                 registerInput.append("Chemistry")
 
-            tutorREGDB = open("tutorDB", "a+")
+            tutorREGDB = open("TutorDB", "a+")
 
             for data in registerInput:
                 tutorREGDB.write(data + ", ")
@@ -888,7 +878,7 @@ class Tutor(tk.Frame):
         TutorTitle.pack(padx = 10, pady = 10)
 
         # Opening database
-        tutordb = open("tutorDB", "r")
+        tutordb = open("TutorDB", "r")
         temp = tutordb.readlines() # Temporary variable to store data read from database
 
         # To be accesed by "StudentDetail" class
@@ -916,7 +906,7 @@ class Tutor(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
@@ -980,14 +970,14 @@ class TutorDetail(tk.Frame):
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Tutor), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), bg = "white")
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
-
+        
         deleteButton = tk.Button(self, text="Delete Tutor", command = lambda: self.confirmdel(), bg = "white")
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
-
-
+        
+        
     def salarypage(self):
         # Display payment
         salarywindow = tk.Toplevel(bg = "white")
@@ -1013,7 +1003,7 @@ class TutorDetail(tk.Frame):
             paydate = dt.datetime.now()
             TutorData[counter][6] = str(paydate.month)
 
-            tutordb = open("tutorDB", "w")
+            tutordb = open("TutorDB", "w")
             for i in range(len(TutorData)):
                 for j in range(len(TutorData[i]) - 1):
                     tutordb.write(str(TutorData[i][j]) + ", ")
@@ -1058,7 +1048,7 @@ class TutorDetail(tk.Frame):
         noButton.pack(padx = 10, pady = 10)
 
     def delete(self):
-        tutordb = open("tutorDB", "w")
+        tutordb = open("TutorDB", "w")
 
         for i in range(len(TutorData)):
             if TutorData[i][0] != TutorData[counter][0]:
