@@ -63,8 +63,10 @@ class Management(tk.Tk):
         REGdateStud = tk.StringVar()
 
         global payment
+        global salary
 
         payment = tk.IntVar()
+        salary = tk.IntVar()
 
         global NameOfTutorREG
         global ConOfTutorREG
@@ -706,9 +708,12 @@ class Student(tk.Frame):
         self.student_list_box = tk.Listbox(self, bg = "white")
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
-        for j in range(len(StudentData)):
+        j = 0
+        while j < len(StudentData):
             StudentName.append(StudentData[j][0])
             self.student_list_box.insert("end", StudentData[j][0])
+
+            j += 1
 
         self.student_list_box.pack(fill = "both")
 
@@ -723,12 +728,15 @@ class Student(tk.Frame):
 
     def chooseNAME(self, event) :
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
-        selected = self.student_list_box.get(self.student_list_box.curselection()[0])
+        SearchStudent = self.student_list_box.get(self.student_list_box.curselection()[0])
 
         # Getting the index of the selected name
         global index
-        for index in range(len(StudentName)):
-            if StudentName[index] == selected:
+        index = -1
+
+        while True:
+            index += 1
+            if StudentName[index] == SearchStudent:
                 break
 
         # Individually set each of the details to the corresponding value from the StudentDate (with the help of index)
@@ -821,6 +829,8 @@ class StudentDetail(tk.Frame):
 
             studentdb.close()
 
+            payment.set("")
+
             OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
 
             quitButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, bg = "white")
@@ -836,7 +846,6 @@ class StudentDetail(tk.Frame):
             payButton = tk.Button(paymentwindow, text = "Pay", command = pay, bg = "white"  )
             payButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        payment.set("")
         self.wait_window(paymentwindow)
         paymentwindow.grab_release()
         # self.controller.quit()
@@ -899,9 +908,12 @@ class Tutor(tk.Frame):
         self.tutor_list_box = tk.Listbox(self, bg = "white")
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
-        for j in range(len(TutorData)):
+        j = 0
+        while j < len(TutorData):
             TutorName.append(TutorData[j][0])
             self.tutor_list_box.insert("end", TutorData[j][0])
+
+            j += 1
 
         self.tutor_list_box.pack(fill = "both")
 
@@ -916,12 +928,15 @@ class Tutor(tk.Frame):
 
     def chooseNAME(self, event) :
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
-        selected = self.tutor_list_box.get(self.tutor_list_box.curselection()[0])
+        SearchTutor = self.tutor_list_box.get(self.tutor_list_box.curselection()[0])
 
         # Getting the index of the selected name
         global counter
-        for counter in range(len(TutorName)):
-            if TutorName[counter] == selected:
+        counter = -1
+        
+        while True:
+            counter += 1
+            if TutorName[counter] == SearchTutor:
                 break
 
         # Individually set each of the details to the corresponding value from the StudentDate (with the help of index)
@@ -984,7 +999,7 @@ class TutorDetail(tk.Frame):
 
 
     def salarypage(self):
-        # Display payment
+        # Display salary
         salarywindow = tk.Toplevel(bg = "white")
         salarywindow.grab_set()
         salarywindow.title("Salary")
@@ -1000,7 +1015,7 @@ class TutorDetail(tk.Frame):
         OutMsg.pack(padx = 10, pady = 8)
 
         def pay():
-            TutorData[counter][4] = float(TutorData[counter][4])- float(payment.get())
+            TutorData[counter][4] = float(TutorData[counter][4])- float(salary.get())
 
             Balance = tk.Label(salarywindow, text ="The outstanding balance for this tutor is RM%.2f " % TutorData[counter][4], bg = "white")
             Balance.pack(padx = 10, pady = 8)
@@ -1017,6 +1032,8 @@ class TutorDetail(tk.Frame):
 
             tutordb.close()
 
+            salary.set("")
+
             OutFeeOfTutor.set("Outstanding Fees: RM%s" % TutorData[counter][4])
 
             quitButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, bg = "white")
@@ -1026,13 +1043,13 @@ class TutorDetail(tk.Frame):
             paymentLabel = tk.Label(salarywindow, text = "Payment", bg = "white")
             paymentLabel.pack(padx = 10, pady = 8)
 
-            paymentEntry = tk.Entry(salarywindow, width = 10, textvariable = payment)
+            paymentEntry = tk.Entry(salarywindow, width = 10, textvariable = salary)
             paymentEntry.pack(padx = 10, pady = 8)
 
             payButton = tk.Button(salarywindow, text = "Pay", command = pay, bg = "white"  )
             payButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        payment.set("")
+        salary.set("")
         self.wait_window(salarywindow)
         salarywindow.grab_release()
         # self.controller.quit()
