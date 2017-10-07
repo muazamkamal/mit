@@ -108,7 +108,7 @@ class Management(tk.Tk):
         # Layering the frames and bringing up "MainMenu" to the top
         self.frames = {}
 
-        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail, TutorRegistration, Tutor, TutorDetail):
+        for F in (Welcome, Login, Signup, MainMenu, Registration, StudentRegistration, Student, StudentDetail, TutorRegistration, Tutor, TutorDetail):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row = 0, column = 0, sticky = "nsew")
@@ -119,7 +119,7 @@ class Management(tk.Tk):
     def show_frame(self, cont):
 
         # Refreshing/reloading the called frame before bringing it up
-        for F in (Welcome, Login, Register, MainMenu, Registration, StudentRegistration, Student, StudentDetail, TutorRegistration, Tutor, TutorDetail):
+        for F in (Welcome, Login, Signup, MainMenu, Registration, StudentRegistration, StudentDetail, TutorRegistration, TutorDetail):
             if cont == F:
                 F(container, self)
 
@@ -143,7 +143,7 @@ class Welcome(tk.Frame):
         loginButton = tk.Button(self, text="Login", command = lambda: controller.show_frame(Login), bg = "white")
         loginButton.pack(side = "top", padx = 10, pady = 10)
 
-        registerButton = tk.Button(self, text="Sign Up", command = lambda: controller.show_frame(Register), bg = "white")
+        registerButton = tk.Button(self, text="Sign Up", command = lambda: controller.show_frame(Signup), bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
 
         testButton = tk.Button(self, text="Developer's Mode", command = lambda: controller.show_frame(MainMenu), bg = "white")
@@ -207,7 +207,7 @@ class Login(tk.Frame):
 
         else:
             # Read data from database
-            checkDB("credentialDB")
+            checkDB("credentialDB.txt")
             creds = open("credentialDB.txt", "r")
             temp = creds.readlines()
             creds.close()
@@ -270,15 +270,15 @@ class Login(tk.Frame):
                 usrnm.set("")
                 pswd.set("")
 
-class Register(tk.Frame):
+class Signup(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.configure(bg = "white")
         self.controller = controller
 
-        RegisterTitle = tk.Label(self, text="Sign Up", font = 22, bg = "white")
-        RegisterTitle.pack(padx = 10, pady = 10)
+        SignupTitle = tk.Label(self, text="Sign Up", font = 22, bg = "white")
+        SignupTitle.pack(padx = 10, pady = 10)
 
         usernameREGLabel = tk.Label(self, text = "Username", bg = "white")
         usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG)
@@ -290,21 +290,21 @@ class Register(tk.Frame):
         passwordREGLabel.pack()
         passwordREGEntry.pack()
 
-        registerButton = tk.Button(self, text="Register", command = lambda: self.register(), bg = "white")
-        registerButton.pack(padx = 10, pady = 10)
+        signupButton = tk.Button(self, text="Signup", command = lambda: self.signup(), bg = "white")
+        signupButton.pack(padx = 10, pady = 10)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Welcome), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-    def register(self):
-        registerUsrnm = usrnmREG.get()
-        registerPswd = pswdREG.get()
+    def signup(self):
+        signupUsrnm = usrnmREG.get()
+        signupPswd = pswdREG.get()
 
-        if registerUsrnm == "" or registerPswd == "":
+        if signupUsrnm == "" or signupPswd == "":
             # Error if no username/password entered by user
             errorREG = tk.Toplevel(bg = "white")
             errorREG.grab_set()
-            errorREG.title("Registration Error")
+            errorREG.title("Sign up Error")
             errorREG.geometry("250x100")
             errorREG.resizable(False,False)
 
@@ -323,7 +323,7 @@ class Register(tk.Frame):
         else:
             # Add new username and password to database
             creds=open("credentialDB.txt","a+")
-            datatowrite=[registerUsrnm,registerPswd]
+            datatowrite=[signupUsrnm,signupPswd]
             for data in datatowrite:
                 creds.write(data + ", ")
             creds.write("\n")
@@ -341,7 +341,7 @@ class Register(tk.Frame):
             successREG.title("Registration Successful")
             successREG.resizable(False,False)
 
-            successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % registerUsrnm, bg = "white")
+            successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white")
             successREGmsg.pack(padx = 10, pady = 10)
 
             dismissButton = tk.Button(successREG, text = "Dismiss", bg = "white", command = successREG.destroy)
@@ -529,11 +529,11 @@ class StudentRegistration(tk.Frame):
             NameOfStudREG.set("")
             ConOfStudREG.set("")
             EmConOfStudREG.set("")
-            AddMathREG.set("")
-            PhyREG.set("")
-            ChemREG.set("")
+            AddMathREG.set(0)
+            PhyREG.set(0)
+            ChemREG.set(0)
 
-            self.controller.quit()
+            student_list_box.insert("end", registerName)
 
 class TutorRegistration(tk.Frame):
     def __init__(self, parent, controller):
@@ -672,11 +672,11 @@ class TutorRegistration(tk.Frame):
             NameOfTutorREG.set("")
             ConOfTutorREG.set("")
             EmConOfTutorREG.set("")
-            TAddMathREG.set("")
-            TPhyREG.set("")
-            TChemREG.set("")
+            TAddMathREG.set(0)
+            TPhyREG.set(0)
+            TChemREG.set(0)
 
-            self.controller.quit()
+            tutor_list_box.insert("end", registerName)
 
 class Student(tk.Frame):
 
@@ -705,20 +705,24 @@ class Student(tk.Frame):
         for i in range(len(temp)):
             StudentData.append(temp[i].replace("\n", " ").split(", "))
 
-        self.student_list_box = tk.Listbox(self, bg = "white")
+        global student_list_box
+
+        student_list_box = tk.Listbox(self, bg = "white")
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
         j = 0
         while j < len(StudentData):
             StudentName.append(StudentData[j][0])
-            self.student_list_box.insert("end", StudentData[j][0])
+            student_list_box.insert("end", StudentData[j][0])
 
             j += 1
 
-        self.student_list_box.pack(fill = "both")
+        studentdb.close()
+
+        student_list_box.pack(fill = "both")
 
         # Assign a method for mouse click
-        self.student_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
+        student_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
@@ -727,8 +731,29 @@ class Student(tk.Frame):
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
-        # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
-        SearchStudent = self.student_list_box.get(self.student_list_box.curselection()[0])
+        # Get the selected/clicked name from the listbox
+        SearchStudent = student_list_box.get(event.widget.curselection()[0])
+
+        # Opening database
+        checkDB("studentDB.txt")
+        studentdb = open("studentDB.txt", "r")
+        temp = studentdb.readlines() # Temporary variable to store data read from database
+
+        StudentData = [] # All the students including their data
+        StudentName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            StudentData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(StudentData):
+            StudentName.append(StudentData[j][0])
+
+            j += 1
+
+        studentdb.close()
 
         # Getting the index of the selected name
         global index
@@ -736,6 +761,7 @@ class Student(tk.Frame):
 
         while True:
             index += 1
+
             if StudentName[index] == SearchStudent:
                 break
 
@@ -803,6 +829,27 @@ class StudentDetail(tk.Frame):
         paymentwindow.title("Payment")
         paymentwindow.resizable(False,False)
 
+        # Opening database
+        checkDB("studentDB.txt")
+        studentdb = open("studentDB.txt", "r")
+        temp = studentdb.readlines() # Temporary variable to store data read from database
+
+        StudentData = [] # All the students including their data
+        StudentName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            StudentData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(StudentData):
+            StudentName.append(StudentData[j][0])
+
+            j += 1
+
+        studentdb.close()
+
         OutstandingMonths = float(StudentData[index][4])/ float(StudentData[index][3])
 
         Outstanding = tk.Label(paymentwindow, textvariable = OutFeeOfStud, bg = "white")
@@ -857,27 +904,52 @@ class StudentDetail(tk.Frame):
         confirmationDEL.title("Are you sure?")
         confirmationDEL.resizable(False,False)
 
+        # Opening database
+        checkDB("studentDB.txt")
+        studentdb = open("studentDB.txt", "r")
+        temp = studentdb.readlines() # Temporary variable to store data read from database
+
+        StudentData = [] # All the students including their data
+        StudentName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            StudentData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(StudentData):
+            StudentName.append(StudentData[j][0])
+
+            j += 1
+
+        studentdb.close()
+
+        def delete():
+            studentdb = open("studentDB.txt", "w")
+
+            for i in range(len(StudentData)):
+                if StudentData[i][0] != StudentData[index][0]:
+                    for j in range(len(StudentData[i]) - 1):
+                        studentdb.write(str(StudentData[i][j]) + ", ")
+
+                    studentdb.write("\n")
+
+            studentdb.close()
+
+            student_list_box.delete(student_list_box.curselection())
+
+            confirmationDEL.destroy()
+
+            self.controller.show_frame(Student)
+
         sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this student?", bg = "white", font = 16)
-        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: self.delete())
+        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: delete())
         noButton = tk.Button(confirmationDEL, text="No", bg = "white", command = lambda: confirmationDEL.destroy())
 
         sure.pack()
         yesButton.pack(padx = 10, pady = 10)
         noButton.pack(padx = 10, pady = 10)
-
-    def delete(self):
-        studentdb = open("studentDB.txt", "w")
-
-        for i in range(len(StudentData)):
-            if StudentData[i][0] != StudentData[index][0]:
-                for j in range(len(StudentData[i]) - 1):
-                    studentdb.write(str(StudentData[i][j]) + ", ")
-
-                studentdb.write("\n")
-
-        studentdb.close()
-
-        self.controller.quit()
 
 class Tutor(tk.Frame):
     def __init__(self, parent, controller):
@@ -905,20 +977,24 @@ class Tutor(tk.Frame):
         for i in range(len(temp)):
             TutorData.append(temp[i].replace("\n", " ").split(", "))
 
-        self.tutor_list_box = tk.Listbox(self, bg = "white")
+        global tutor_list_box
+
+        tutor_list_box = tk.Listbox(self, bg = "white")
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
         j = 0
         while j < len(TutorData):
             TutorName.append(TutorData[j][0])
-            self.tutor_list_box.insert("end", TutorData[j][0])
+            tutor_list_box.insert("end", TutorData[j][0])
 
             j += 1
 
-        self.tutor_list_box.pack(fill = "both")
+        tutordb.close()
+
+        tutor_list_box.pack(fill = "both")
 
         # Assign a method for mouse click
-        self.tutor_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
+        tutor_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), bg = "white")
         backButton.pack(side = "bottom", padx = 10, pady = 10)
@@ -928,12 +1004,33 @@ class Tutor(tk.Frame):
 
     def chooseNAME(self, event) :
         # Get the selected/clicked name from the listbox and set it to the global variable TitleOfStud
-        SearchTutor = self.tutor_list_box.get(self.tutor_list_box.curselection()[0])
+        SearchTutor = tutor_list_box.get(event.widget.curselection()[0])
+
+        # Opening database
+        checkDB("tutorDB.txt")
+        tutordb = open("tutorDB.txt", "r")
+        temp = tutordb.readlines() # Temporary variable to store data read from database
+
+        TutorData = [] # All the students including their data
+        TutorName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            TutorData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(TutorData):
+            TutorName.append(TutorData[j][0])
+
+            j += 1
+
+        tutordb.close()
 
         # Getting the index of the selected name
         global counter
         counter = -1
-        
+
         while True:
             counter += 1
             if TutorName[counter] == SearchTutor:
@@ -1005,6 +1102,26 @@ class TutorDetail(tk.Frame):
         salarywindow.title("Salary")
         salarywindow.resizable(False,False)
 
+        # Opening database
+        checkDB("tutorDB.txt")
+        tutordb = open("tutorDB.txt", "r")
+        temp = tutordb.readlines() # Temporary variable to store data read from database
+
+        TutorData = [] # All the students including their data
+        TutorName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            TutorData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(TutorData):
+            TutorName.append(TutorData[j][0])
+
+            j += 1
+
+        tutordb.close()
 
         OutstandingMonths = float(TutorData[counter][4])/ float(TutorData[counter][3])
 
@@ -1061,27 +1178,52 @@ class TutorDetail(tk.Frame):
         confirmationDEL.title("Are you sure?")
         confirmationDEL.resizable(False,False)
 
+        # Opening database
+        checkDB("tutorDB.txt")
+        tutordb = open("tutorDB.txt", "r")
+        temp = tutordb.readlines() # Temporary variable to store data read from database
+
+        TutorData = [] # All the students including their data
+        TutorName = [] # All of the students names only
+
+        # Loop to split individual array for each student's data
+        for i in range(len(temp)):
+            TutorData.append(temp[i].replace("\n", " ").split(", "))
+
+        # Appending student names from "StudentData" to "StudentName" as well as to listbox
+        j = 0
+        while j < len(TutorData):
+            TutorName.append(TutorData[j][0])
+
+            j += 1
+
+        tutordb.close()
+
+        def delete():
+            tutordb = open("tutorDB.txt", "w")
+
+            for i in range(len(TutorData)):
+                if TutorData[i][0] != TutorData[counter][0]:
+                    for j in range(len(TutorData[i]) - 1):
+                        tutordb.write(str(TutorData[i][j]) + ", ")
+
+                    tutordb.write("\n")
+
+            tutordb.close()
+
+            tutor_list_box.delete(tutor_list_box.curselection())
+
+            confirmationDEL.destroy()
+
+            self.controller.show_frame(Tutor)
+
         sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this tutor?", bg = "white", font = 16)
-        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: self.delete())
+        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: delete())
         noButton = tk.Button(confirmationDEL, text="No", bg = "white", command = lambda: confirmationDEL.destroy())
 
         sure.pack()
         yesButton.pack(padx = 10, pady = 10)
         noButton.pack(padx = 10, pady = 10)
-
-    def delete(self):
-        tutordb = open("tutorDB.txt", "w")
-
-        for i in range(len(TutorData)):
-            if TutorData[i][0] != TutorData[counter][0]:
-                for j in range(len(TutorData[i]) - 1):
-                    tutordb.write(str(TutorData[i][j]) + ", ")
-
-                tutordb.write("\n")
-
-        tutordb.close()
-
-        self.controller.quit()
 
 if __name__ == "__main__":
     management = Management()
