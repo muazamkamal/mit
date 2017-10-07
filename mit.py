@@ -207,7 +207,7 @@ class Login(tk.Frame):
 
         else:
             # Read data from database
-            checkDB("credentialDB")
+            checkDB("credentialDB.txt")
             creds = open("credentialDB.txt", "r")
             temp = creds.readlines()
             creds.close()

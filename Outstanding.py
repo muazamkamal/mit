@@ -8,17 +8,18 @@ MonthlastPaid = input("Last Month : ")
 YearlastPaid = input ("Last Year : ")
 TuitionFees = 100
 
-MonthDifference = MonthcurrentPaid - MonthlastPaid
+yearDifference = YearcurrentPaid - YearlastPaid
+MonthDifference = (MonthcurrentPaid +(12* yearDifference)) - MonthlastPaid
 
 if MonthDifference < 0:
     OutstandingMonths = 12-(MonthDifference * (-1))
 else:
-    OutstandingMonths = MonthcurrentPaid- MonthlastPaid
+    OutstandingMonths = MonthDifference
     
 if YearcurrentPaid == YearlastPaid:
     Outstanding = OutstandingMonths*TuitionFees
 else:
-    Outstanding = (YearcurrentPaid - YearlastPaid)*(OutstandingMonths)*TuitionFees
+    Outstanding = (OutstandingMonths)*TuitionFees
 
 
 
