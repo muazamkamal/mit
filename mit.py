@@ -9,16 +9,13 @@ def checkDB(dbname):
         temp = open(dbname, "w")
         temp.close()
 
-# Check if input includes only numbers and "-"
+# Check if input includes only numbers
 def is_Phone(x):
     try:
         x = int(x)
         return True
     except:
-        if x == "-":
-            return True
-        else:
-            return False
+        return False
 
 # Check if input only includes letters and spaces
 def is_Letter(x):
@@ -34,8 +31,12 @@ def is_Lower(x):
     else:
         return False
 
-class Management(tk.Tk):
+titleFont = ("Roboto", "36", "bold")
+subtitleFont = ("Roboto", "12")
+buttonFont = ("Roboto", "20")
+subbuttonFont = ("Roboto")
 
+class Management(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
@@ -70,6 +71,8 @@ class Management(tk.Tk):
         AddMathREG = tk.IntVar()
         PhyREG = tk.IntVar()
         ChemREG = tk.IntVar()
+        ConOfStudREG.set("0")
+        EmConOfStudREG.set("0")
 
         global NameOfStud
         global ConOfStud
@@ -106,6 +109,8 @@ class Management(tk.Tk):
         TAddMathREG = tk.IntVar()
         TPhyREG = tk.IntVar()
         TChemREG = tk.IntVar()
+        ConOfTutorREG.set("0")
+        EmConOfTutorREG.set("0")
 
         global NameOfTutor
         global ConOfTutor
@@ -151,47 +156,43 @@ class Management(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
-    # Method for getting variables between frames
-    def get_page(self, classname):
-        return self.frames[classname]
-
 class Welcome(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        WelcomeTitle = tk.Label(self, text="Welcome!", font = 22, fg="white", bg = "#800000")
-        WelcomeTitle.pack(padx = 10, pady = 10)
+        WelcomeTitle = tk.Label(self, text = "M.I.T", font = titleFont, fg="black", bg = "#ba000d")
+        WelcomeTitle.pack(fill = "x")
 
-        loginButton = tk.Button(self, text="Login", command = lambda: controller.show_frame(Login), width = 15, height = 2,font=('Roboto', '20'), bg = "white")
+        loginButton = tk.Button(self, text = "Login", command = lambda: controller.show_frame(Login), width = 15, height = 2, font = buttonFont, bg = "white")
         loginButton.pack(side = "top", padx = 10, pady = 10)
 
-        registerButton = tk.Button(self, text="Sign Up", command = lambda: controller.show_frame(Signup), width = 15, height = 2,font=('Roboto', '20'), bg = "white")
+        registerButton = tk.Button(self, text = "Sign Up", command = lambda: controller.show_frame(Signup), width = 15, height = 2, font = buttonFont, bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
 
-        testButton = tk.Button(self, text="Developer's Mode", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        testButton = tk.Button(self, text = "Developer's Mode", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
         testButton.pack(side = "top", padx = 10, pady = 10)
 
-        quitButton = tk.Button(self, text="Quit", command = lambda: quit(), width = 10, bg = "white")
+        quitButton = tk.Button(self, text = "Quit", command = lambda: quit(), width = 10, bg = "white", font = subbuttonFont)
         quitButton.pack(side = "bottom", pady = 10)
 
 class Login(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        LoginTitle = tk.Label(self, text="Login", font = 22, fg="white", bg = "#800000")
-        LoginTitle.pack(padx = 10, pady = 10)
+        LoginTitle = tk.Label(self, text = "Login", font = titleFont, fg="black", bg = "#ba000d")
+        LoginTitle.pack(fill = "x")
 
         vcmdLower = (self.register(is_Lower), "%S")
 
-        usernameLabel = tk.Label(self, text = "Username", fg="white", bg = "#800000")
+        usernameLabel = tk.Label(self, text = "Username", fg = "black", bg = "#f44336", font = subtitleFont)
         usernameEntry = tk.Entry(self, width = 25, textvariable = usrnm, validate = "key", validatecommand = vcmdLower)
-        passwordLabel = tk.Label(self, text = "Password", fg="white", bg = "#800000")
+        passwordLabel = tk.Label(self, text = "Password", fg = "black", bg = "#f44336", font = subtitleFont)
         passwordEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswd)
         passwordEntry.bind('<Return>', lambda event: self.auth())
 
@@ -200,10 +201,10 @@ class Login(tk.Frame):
         passwordLabel.pack()
         passwordEntry.pack()
 
-        submitButton = tk.Button(self, text="Login", command = lambda: self.auth(), width = 15, height = 2, bg = "white")
+        submitButton = tk.Button(self, text = "Login", command = lambda: self.auth(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         submitButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Welcome), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text = "Back", command = lambda: controller.show_frame(Welcome), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def auth(self):
@@ -217,13 +218,12 @@ class Login(tk.Frame):
             errorCREDS = tk.Toplevel(bg = "white")
             errorCREDS.grab_set()
             errorCREDS.title("Credentials Error")
-            errorCREDS.geometry("250x100")
             errorCREDS.resizable(False,False)
 
-            errorCREDSmsg = tk.Label(errorCREDS, text = "Please enter your username/password!", bg = "white")
+            errorCREDSmsg = tk.Label(errorCREDS, text = "Please enter your username/password!", bg = "white", font = subtitleFont)
             errorCREDSmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorCREDS, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorCREDS.destroy)
+            dismissButton = tk.Button(errorCREDS, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorCREDS.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorCREDS)
@@ -264,13 +264,12 @@ class Login(tk.Frame):
                     errorAUTH = tk.Toplevel(bg = "white")
                     errorAUTH.grab_set()
                     errorAUTH.title("Authentication Error")
-                    errorAUTH.geometry("250x100")
                     errorAUTH.resizable(False,False)
 
-                    errorAUTHmsg = tk.Label(errorAUTH, text = "Username/Password not found!", bg = "white")
+                    errorAUTHmsg = tk.Label(errorAUTH, text = "Username/Password not found!", bg = "white", font = subtitleFont)
                     errorAUTHmsg.pack(padx = 10, pady = 10)
 
-                    dismissButton = tk.Button(errorAUTH, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorAUTH.destroy)
+                    dismissButton = tk.Button(errorAUTH, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorAUTH.destroy)
                     dismissButton.pack(padx = 10, pady = 10)
 
                     self.wait_window(errorAUTH)
@@ -283,13 +282,12 @@ class Login(tk.Frame):
                 errorDB = tk.Toplevel(bg = "white")
                 errorDB.grab_set()
                 errorDB.title("Databse Error")
-                errorDB.geometry("250x100")
                 errorDB.resizable(False,False)
 
-                errorDBmsg = tk.Label(errorDB, text = "Database empty! Please register first!", bg = "white")
+                errorDBmsg = tk.Label(errorDB, text = "Database empty! Please register first!", bg = "white", font = subtitleFont)
                 errorDBmsg.pack(padx = 10, pady = 10)
 
-                dismissButton = tk.Button(errorDB, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorDB.destroy)
+                dismissButton = tk.Button(errorDB, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorDB.destroy)
                 dismissButton.pack(padx = 10, pady = 10)
 
                 self.wait_window(errorDB)
@@ -302,17 +300,17 @@ class Signup(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        SignupTitle = tk.Label(self, text="Sign Up", font = 22, fg="white", bg = "#800000")
-        SignupTitle.pack(padx = 10, pady = 10)
+        SignupTitle = tk.Label(self, text = "Sign Up", fg = "black", bg = "#ba000d", font = titleFont)
+        SignupTitle.pack(fill = "x")
 
         vcmdLower = (self.register(is_Lower), "%S")
 
-        usernameREGLabel = tk.Label(self, text = "Username", fg="white", bg = "#800000")
+        usernameREGLabel = tk.Label(self, text = "Username", fg = "black", bg = "#f44336", font = subtitleFont)
         usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG, validate = "key", validatecommand = vcmdLower)
-        passwordREGLabel = tk.Label(self, text = "Password", fg="white", bg = "#800000")
+        passwordREGLabel = tk.Label(self, text = "Password", fg = "black", bg = "#f44336", font = subtitleFont)
         passwordREGEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswdREG)
 
         usernameREGLabel.pack()
@@ -320,10 +318,10 @@ class Signup(tk.Frame):
         passwordREGLabel.pack()
         passwordREGEntry.pack()
 
-        signupButton = tk.Button(self, text="Signup", command = lambda: self.signup(), width = 15, height = 2, bg = "white")
+        signupButton = tk.Button(self, text = "Signup", command = lambda: self.signup(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         signupButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Welcome), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text = "Back", command = lambda: controller.show_frame(Welcome), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def signup(self):
@@ -356,10 +354,10 @@ class Signup(tk.Frame):
             errorREG.geometry("250x100")
             errorREG.resizable(False,False)
 
-            errorREGmsg = tk.Label(errorREG, text = "Please enter your username/password!", bg = "white")
+            errorREGmsg = tk.Label(errorREG, text = "Please enter your username/password!", bg = "white", font = subtitleFont)
             errorREGmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorREG, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorREG.destroy)
+            dismissButton = tk.Button(errorREG, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorREG.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorREG)
@@ -376,10 +374,10 @@ class Signup(tk.Frame):
             errorDUP.geometry("250x100")
             errorDUP.resizable(False,False)
 
-            errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white")
+            errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white", font = subtitleFont)
             errorREGmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorDUP, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorDUP.destroy)
+            dismissButton = tk.Button(errorDUP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorDUP.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorDUP)
@@ -390,11 +388,12 @@ class Signup(tk.Frame):
 
         else:
             # Add new username and password to database
-            creds=open("credentialDB.txt","a+")
-            datatowrite=[signupUsrnm,signupPswd]
+            creds = open("credentialDB.txt","a+")
+            datatowrite = [signupUsrnm,signupPswd]
             for data in datatowrite:
                 creds.write(data + ", ")
             creds.write("\n")
+
             creds.close()
 
             usrnmREG.set("")
@@ -409,10 +408,10 @@ class Signup(tk.Frame):
             successREG.title("Registration Successful")
             successREG.resizable(False,False)
 
-            successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white")
+            successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white", font = subtitleFont)
             successREGmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(successREG, text = "Dismiss", width = 15, height = 2, bg = "white", command = successREG.destroy)
+            dismissButton = tk.Button(successREG, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = successREG.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(successREG)
@@ -422,87 +421,86 @@ class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        MenuTitle = tk.Label(self, text="Main Menu", font = 22, fg="white", bg = "#800000")
-        MenuTitle.pack(padx = 10, pady = 10)
+        MenuTitle = tk.Label(self, text = "Main Menu", font = titleFont, fg = "black", bg = "#ba000d")
+        MenuTitle.pack(fill = "x")
 
-        registrationButton = tk.Button(self, text="Registration", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white")
+        registrationButton = tk.Button(self, text = "Registration", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white", font = buttonFont)
         registrationButton.pack(padx = 10, pady = 10)
 
-        studentButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(Student), width = 15, height = 2, bg = "white")
+        studentButton = tk.Button(self, text = "Student", command = lambda: controller.show_frame(Student), width = 15, height = 2, bg = "white", font = buttonFont)
         studentButton.pack(padx = 10, pady = 10)
 
-        studentButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(Tutor), width = 15, height = 2, bg = "white")
-        studentButton.pack(padx = 10, pady = 10)
+        tutorButton = tk.Button(self, text = "Tutor", command = lambda: controller.show_frame(Tutor), width = 15, height = 2, bg = "white", font = buttonFont)
+        tutorButton.pack(padx = 10, pady = 10)
 
-        quitButton = tk.Button(self, text="Quit", command = lambda: quit(), width = 15, height = 2, bg = "white")
+        quitButton = tk.Button(self, text = "Quit", command = lambda: quit(), width = 10, font = subbuttonFont, bg = "white")
         quitButton.pack(side = "bottom", pady = 10)
 
 class Registration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        RegistrationTitle = tk.Label(self, text="Registration", font = 22, fg="white", bg = "#800000")
-        RegistrationTitle.pack(padx = 10, pady = 10)
+        RegistrationTitle = tk.Label(self, text = "Registration", font = titleFont, fg = "black", bg = "#ba000d")
+        RegistrationTitle.pack(fill = "x")
 
-        StudentRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(StudentRegistration), width = 15, height = 2, bg = "white")
+        StudentRegistrationButton = tk.Button(self, text = "Student", command = lambda: controller.show_frame(StudentRegistration), width = 15, height = 2, bg = "white", font = subbuttonFont)
         StudentRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
-
-        TutorRegistrationButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(TutorRegistration), width = 15, height = 2, bg = "white")
+        TutorRegistrationButton = tk.Button(self, text = "Tutor", command = lambda: controller.show_frame(TutorRegistration), width = 15, height = 2, bg = "white", font = subbuttonFont)
         TutorRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text = "Back", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
 class StudentRegistration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        RegistrationTitle = tk.Label(self, text="Student Registration", font = 22, fg="white", bg = "#800000")
-        RegistrationTitle.pack(padx = 10, pady = 10)
+        RegistrationTitle = tk.Label(self, text = "Student Registration", font = titleFont, fg="black", bg = "#ba000d")
+        RegistrationTitle.pack(fill = "x")
 
         vcmdNum = (self.register(is_Phone), "%S")
         vcmdLetter = (self.register(is_Letter), "%S")
 
-        NameOfStudREGLabel = tk.Label(self, text = " Full Name :", fg="white", bg = "#800000")
+        NameOfStudREGLabel = tk.Label(self, text = " Full Name :", fg = "black", bg = "#f44336", font = subtitleFont)
         NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG, validate = "key", validatecommand = vcmdLetter)
-        ConOfStudREGLabel = tk.Label(self, text = "Contact :", fg="white", bg = "#800000")
+        ConOfStudREGLabel = tk.Label(self, text = "Contact :", fg = "black", bg = "#f44336", font = subtitleFont)
         ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG, validate = "key", validatecommand = vcmdNum)
-        EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact :", fg="white", bg = "#800000")
+        EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact :", fg = "black", bg = "#f44336", font = subtitleFont)
         EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG, validate = "key", validatecommand = vcmdNum)
-        SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg="white", bg = "#800000")
+        SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg = "black", bg = "#f44336", font = subtitleFont)
 
-        checkbuttonAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=AddMathREG, bg = "white")
-        checkbuttonPhy = tk.Checkbutton(self, text="Physics", variable=PhyREG, bg = "white")
-        checkbuttonChem = tk.Checkbutton(self, text="Chemistry", variable=ChemREG, bg = "white")
+        checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+        checkbuttonPhy = tk.Checkbutton(self, text = "Physics", variable=PhyREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+        checkbuttonChem = tk.Checkbutton(self, text = "Chemistry", variable=ChemREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
 
-        NameOfStudREGLabel.pack(padx = 10, pady = 8)
+        NameOfStudREGLabel.pack()
         NameOfStudREGEntry.pack(padx = 10, pady = 8)
-        ConOfStudREGLabel.pack(padx = 10, pady = 8)
+        ConOfStudREGLabel.pack()
         ConOfStudREGEntry.pack(padx = 10, pady = 8)
-        EmConOfStudREGLabel.pack(padx = 10, pady = 8)
+        EmConOfStudREGLabel.pack()
         EmConOfStudREGEntry.pack(padx = 10, pady = 8)
-        SubOfStudREGLabel.pack(padx = 10, pady = 8)
+        SubOfStudREGLabel.pack()
         checkbuttonAddMath.pack(padx = 10, pady = 5)
         checkbuttonPhy.pack(padx = 10, pady = 5)
         checkbuttonChem.pack(padx = 10, pady = 5)
 
-        saveButton = tk.Button(self, text="Save", command = lambda: self.registerstudent(), width = 15, height = 2, bg = "white")
+        saveButton = tk.Button(self, text = "Save", command = lambda: self.registerstudent(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         saveButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text = "Back", command = lambda: controller.show_frame(Registration), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text = "Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def registerstudent(self):
@@ -524,20 +522,19 @@ class StudentRegistration(tk.Frame):
             errorINCOMP = tk.Toplevel(bg = "white")
             errorINCOMP.grab_set()
             errorINCOMP.title("Registration Error")
-            errorINCOMP.geometry("250x100")
             errorINCOMP.resizable(False,False)
 
-            errorINCOMPmsg = tk.Label(errorINCOMP, text = "Please complete the form!", bg = "white")
+            errorINCOMPmsg = tk.Label(errorINCOMP, text = "Please complete the form!", bg = "white", font = subtitleFont)
             errorINCOMPmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorINCOMP, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorINCOMP.destroy)
+            dismissButton = tk.Button(errorINCOMP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorINCOMP.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorINCOMP)
             errorINCOMP.grab_release()
 
-        elif (len(registerCon) != 11 or len(registerEm) != 11 or
-            registerCon[3] != "-" or registerEm[3] != "-"
+        elif (len(registerCon) != 10 or len(registerEm) != 10 or
+            registerCon[0] != "0" or registerEm[0] != "0"
             ):
             #  Error if wrong format
             errorFORMAT = tk.Toplevel(bg = "white")
@@ -545,10 +542,10 @@ class StudentRegistration(tk.Frame):
             errorFORMAT.title("Format Error")
             errorFORMAT.resizable(False,False)
 
-            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white")
+            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"0123456789\"", bg = "white", font = subtitleFont)
             errorINCOMPmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorFORMAT.destroy)
+            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorFORMAT.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorFORMAT)
@@ -605,18 +602,18 @@ class StudentRegistration(tk.Frame):
             successStudREG.title("Registration Successful")
             successStudREG.resizable(False,False)
 
-            successStudREGmsg = tk.Label(successStudREG, text = "Student \"%s\" has been successfully registered!" % registerName, bg = "white")
+            successStudREGmsg = tk.Label(successStudREG, text = "Student \"%s\" has been successfully registered!" % registerName, bg = "white", font = subtitleFont)
             successStudREGmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(successStudREG, text = "Dismiss", width = 15, height = 2, bg = "white", command = successStudREG.destroy)
+            dismissButton = tk.Button(successStudREG, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = successStudREG.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(successStudREG)
             successStudREG.grab_release()
 
             NameOfStudREG.set("")
-            ConOfStudREG.set("")
-            EmConOfStudREG.set("")
+            ConOfStudREG.set("0")
+            EmConOfStudREG.set("0")
             AddMathREG.set(0)
             PhyREG.set(0)
             ChemREG.set(0)
@@ -627,45 +624,45 @@ class TutorRegistration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
         vcmdNum = (self.register(is_Phone), "%S")
         vcmdLetter = (self.register(is_Letter), "%S")
 
-        RegistrationTitle = tk.Label(self, text=" Tutor Registration", font = 22, fg="white", bg = "#800000")
-        RegistrationTitle.pack(padx = 10, pady = 10)
+        RegistrationTitle = tk.Label(self, text = " Tutor Registration", font = titleFont, fg="black", bg = "#ba000d")
+        RegistrationTitle.pack(fill = "x")
 
-        NameOfTutorREGLabel = tk.Label(self, text = " Full Name :", fg="white", bg = "#800000")
+        NameOfTutorREGLabel = tk.Label(self, text = " Full Name :", fg = "white", bg = "#f44336", font = subtitleFont)
         NameOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = NameOfTutorREG, validate = "key", validatecommand = vcmdLetter)
-        ConOfTutorREGLabel = tk.Label(self, text = "Contact :", fg="white", bg = "#800000")
+        ConOfTutorREGLabel = tk.Label(self, text = "Contact :", fg = "white", bg = "#f44336", font = subtitleFont)
         ConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = ConOfTutorREG, validate = "key", validatecommand = vcmdNum)
-        EmConOfTutorREGLabel = tk.Label(self, text = "Emergency Contact :", fg="white", bg = "#800000")
+        EmConOfTutorREGLabel = tk.Label(self, text = "Emergency Contact :", fg  ="white", bg = "#f44336", font = subtitleFont)
         EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
-        SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg="white", bg = "#800000")
+        SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg = "white", bg = "#f44336", font = subtitleFont)
 
-        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, bg = "white")
-        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, bg = "white")
-        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, bg = "white")
+        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, fg = "white", bg = "#f44336", font = subtitleFont)
+        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, fg = "white", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, fg = "white", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
 
-        NameOfTutorREGLabel.pack(padx = 10, pady = 8)
+        NameOfTutorREGLabel.pack()
         NameOfTutorREGEntry.pack(padx = 10, pady = 8)
-        ConOfTutorREGLabel.pack(padx = 10, pady = 8)
+        ConOfTutorREGLabel.pack()
         ConOfTutorREGEntry.pack(padx = 10, pady = 8)
-        EmConOfTutorREGLabel.pack(padx = 10, pady = 8)
+        EmConOfTutorREGLabel.pack()
         EmConOfTutorREGEntry.pack(padx = 10, pady = 8)
-        SubOfTutorREGLabel.pack(padx = 10, pady = 8)
+        SubOfTutorREGLabel.pack()
         checkbuttonTAddMath.pack(padx = 10, pady = 5)
         checkbuttonTPhy.pack(padx = 10, pady = 5)
         checkbuttonTChem.pack(padx = 10, pady = 5)
 
-        saveButton = tk.Button(self, text="Save", command = lambda: self.registertutor(), width = 15, height = 2, bg = "white")
+        saveButton = tk.Button(self, text = "Save", command = lambda: self.registertutor(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         saveButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text = "Back", command = lambda: controller.show_frame(Registration), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text = "Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def registertutor(self):
@@ -688,20 +685,19 @@ class TutorRegistration(tk.Frame):
                 errorINCOMP = tk.Toplevel(bg = "white")
                 errorINCOMP.grab_set()
                 errorINCOMP.title("Registration Error")
-                errorINCOMP.geometry("250x100")
                 errorINCOMP.resizable(False,False)
 
-                errorINCOMPmsg = tk.Label(errorINCOMP, text = "Please complete the form!", bg = "white")
+                errorINCOMPmsg = tk.Label(errorINCOMP, text = "Please complete the form!", bg = "white", font = subtitleFont)
                 errorINCOMPmsg.pack(padx = 10, pady = 10)
 
-                dismissButton = tk.Button(errorINCOMP, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorINCOMP.destroy)
+                dismissButton = tk.Button(errorINCOMP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorINCOMP.destroy)
                 dismissButton.pack(padx = 10, pady = 10)
 
                 self.wait_window(errorINCOMP)
                 errorINCOMP.grab_release()
 
-        elif (len(registerCon) != 11 or len(registerEm) != 11 or
-            registerCon[3] != "-" or registerEm[3] != "-"
+        elif (len(registerCon) != 10 or len(registerEm) != 10 or
+            registerCon[0] != "0" or registerEm[0] != "0"
             ):
             #  Error if wrong format
             errorFORMAT = tk.Toplevel(bg = "white")
@@ -709,10 +705,10 @@ class TutorRegistration(tk.Frame):
             errorFORMAT.title("Format Error")
             errorFORMAT.resizable(False,False)
 
-            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white")
+            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white", font = subtitleFont)
             errorINCOMPmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", width = 15, height = 2, bg = "white", command = errorFORMAT.destroy)
+            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorFORMAT.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(errorFORMAT)
@@ -769,18 +765,18 @@ class TutorRegistration(tk.Frame):
             successTutorREG.title("Registration Successful")
             successTutorREG.resizable(False,False)
 
-            successTutorREGmsg = tk.Label(successTutorREG, text = "Tutor \"%s\" has been successfully registered!" % registerName, bg = "white")
+            successTutorREGmsg = tk.Label(successTutorREG, text = "Tutor \"%s\" has been successfully registered!" % registerName, bg = "white", font = subtitleFont)
             successTutorREGmsg.pack(padx = 10, pady = 10)
 
-            dismissButton = tk.Button(successTutorREG, text = "Dismiss", width = 15, height = 2, bg = "white", command = successTutorREG.destroy)
+            dismissButton = tk.Button(successTutorREG, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont,command = successTutorREG.destroy)
             dismissButton.pack(padx = 10, pady = 10)
 
             self.wait_window(successTutorREG)
             successTutorREG.grab_release()
 
             NameOfTutorREG.set("")
-            ConOfTutorREG.set("")
-            EmConOfTutorREG.set("")
+            ConOfTutorREG.set("0")
+            EmConOfTutorREG.set("0")
             TAddMathREG.set(0)
             TPhyREG.set(0)
             TChemREG.set(0)
@@ -788,15 +784,14 @@ class TutorRegistration(tk.Frame):
             tutor_list_box.insert("end", registerName)
 
 class Student(tk.Frame):
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        StudentTitle = tk.Label(self, text="Student List", font = 22, fg="white", bg = "#800000")
-        StudentTitle.pack(padx = 10, pady = 10)
+        StudentTitle = tk.Label(self, text="Student List", font = titleFont, fg="black", bg = "#ba000d")
+        StudentTitle.pack(fill = "x")
 
         # Opening database
         checkDB("studentDB.txt")
@@ -816,7 +811,7 @@ class Student(tk.Frame):
 
         global student_list_box
 
-        student_list_box = tk.Listbox(self, bg = "white")
+        student_list_box = tk.Listbox(self, bg = "white", font = subtitleFont)
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
         j = 0
@@ -828,15 +823,15 @@ class Student(tk.Frame):
 
         studentdb.close()
 
-        student_list_box.pack(fill = "both")
+        student_list_box.pack(fill = "both", expand = 1)
 
         # Assign a method for mouse click
         student_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
@@ -897,19 +892,19 @@ class StudentDetail(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        DetailTitle = tk.Label(self, text = "Student's Details", font = 22, fg="white", bg = "#800000")
-        DetailTitle.pack(padx = 10, pady = 10)
+        DetailTitle = tk.Label(self, text = "Student's Details", font = titleFont, fg="black", bg = "#ba000d")
+        DetailTitle.pack(fill = "x")
 
-        Name = tk.Label(self, textvariable = NameOfStud, fg="white", bg = "#800000")
-        Contact = tk.Label(self, textvariable = ConOfStud, fg="white", bg = "#800000")
-        EContact = tk.Label(self, textvariable = EmConOfStud, fg="white", bg = "#800000")
-        Subject = tk.Label(self, textvariable = SubOfStud, fg="white", bg = "#800000")
-        TuitionFees = tk.Label(self, textvariable = FeeOfStud, fg="white", bg = "#800000")
-        Outstanding = tk.Label(self, textvariable = OutFeeOfStud, fg="white", bg = "#800000")
-        DateRegister = tk.Label(self, textvariable = REGdateStud, fg="white", bg = "#800000")
+        Name = tk.Label(self, textvariable = NameOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        Contact = tk.Label(self, textvariable = ConOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        EContact = tk.Label(self, textvariable = EmConOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        Subject = tk.Label(self, textvariable = SubOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        TuitionFees = tk.Label(self, textvariable = FeeOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        Outstanding = tk.Label(self, textvariable = OutFeeOfStud, fg="black", bg = "#f44336", font = subtitleFont)
+        DateRegister = tk.Label(self, textvariable = REGdateStud, fg="black", bg = "#f44336", font = subtitleFont)
 
         Name.pack(side = "top")
         Contact.pack(side = "top")
@@ -919,16 +914,16 @@ class StudentDetail(tk.Frame):
         Outstanding.pack(side = "top")
         DateRegister.pack(side = "top")
 
-        PaymentButton = tk.Button(self, text="Payment", command = lambda: self.paymentpage(), width = 15, height = 2, bg = "white")
+        PaymentButton = tk.Button(self, text="Payment", command = lambda: self.paymentpage(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         PaymentButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Student), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Student), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        deleteButton = tk.Button(self, text="Delete Student", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red")
+        deleteButton = tk.Button(self, text="DELETE STUDENT", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", font = ("Roboto", 12,"bold"))
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def paymentpage(self):
@@ -961,16 +956,16 @@ class StudentDetail(tk.Frame):
 
         OutstandingMonths = float(StudentData[index][4])/ float(StudentData[index][3])
 
-        Outstanding = tk.Label(paymentwindow, textvariable = OutFeeOfStud, bg = "white")
+        Outstanding = tk.Label(paymentwindow, textvariable = OutFeeOfStud, bg = "white", font = subtitleFont)
         Outstanding.pack(side = "top")
 
-        OutMsg = tk.Label(paymentwindow, text ="This student has outstanding fees for %d months !" % OutstandingMonths, bg = "white")
+        OutMsg = tk.Label(paymentwindow, text ="This student has outstanding fees for %d months !" % OutstandingMonths, bg = "white", font = subtitleFont)
         OutMsg.pack(padx = 10, pady = 8)
 
         def pay():
             StudentData[index][4] = float(StudentData[index][4])- float(payment.get())
 
-            Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white")
+            Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white", font = subtitleFont)
             Balance.pack(padx = 10, pady = 8)
 
             paydate = dt.datetime.now()
@@ -989,17 +984,17 @@ class StudentDetail(tk.Frame):
 
             OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
 
-            quitButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, width = 15, height = 2, bg = "white")
+            quitButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, width = 10, bg = "white", font = subbuttonFont)
             quitButton.pack(side = "bottom", padx = 10, pady = 10)
 
         if StudentData[index][4] != "0.0":
-            paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white")
+            paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white", font = subtitleFont)
             paymentLabel.pack(padx = 10, pady = 8)
 
             paymentEntry = tk.Entry(paymentwindow, width = 10, textvariable = payment)
             paymentEntry.pack(padx = 10, pady = 8)
 
-            payButton = tk.Button(paymentwindow, text = "Pay", command = pay, width = 15, height = 2, bg = "white"  )
+            payButton = tk.Button(paymentwindow, text = "Pay", command = pay, width = 10, bg = "white", font = subbuttonFont)
             payButton.pack(side = "bottom", padx = 10, pady = 10)
 
         self.wait_window(paymentwindow)
@@ -1052,9 +1047,9 @@ class StudentDetail(tk.Frame):
 
             self.controller.show_frame(Student)
 
-        sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this student?", bg = "white", font = 16)
-        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: delete())
-        noButton = tk.Button(confirmationDEL, text="No", bg = "white", command = lambda: confirmationDEL.destroy())
+        sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this student?", bg = "white", font = subtitleFont)
+        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", font = subbuttonFont,command = lambda: delete())
+        noButton = tk.Button(confirmationDEL, text="No", bg = "white", font = subbuttonFont, command = lambda: confirmationDEL.destroy())
 
         sure.pack()
         yesButton.pack(padx = 10, pady = 10)
@@ -1064,11 +1059,11 @@ class Tutor(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        TutorTitle = tk.Label(self, text="Tutor List", font = 22, fg="white", bg = "#800000")
-        TutorTitle.pack(padx = 10, pady = 10)
+        TutorTitle = tk.Label(self, text="Tutor List", font = titleFont, fg="black", bg = "#ba000d")
+        TutorTitle.pack(fill = "x")
 
         # Opening database
         checkDB("tutorDB.txt")
@@ -1088,7 +1083,7 @@ class Tutor(tk.Frame):
 
         global tutor_list_box
 
-        tutor_list_box = tk.Listbox(self, bg = "white")
+        tutor_list_box = tk.Listbox(self, bg = "white", font = subtitleFont)
 
         # Appending student names from "StudentData" to "StudentName" as well as to listbox
         j = 0
@@ -1100,15 +1095,15 @@ class Tutor(tk.Frame):
 
         tutordb.close()
 
-        tutor_list_box.pack(fill = "both")
+        tutor_list_box.pack(fill = "both", expand = 1)
 
         # Assign a method for mouse click
         tutor_list_box.bind('<<ListboxSelect>>', self.chooseNAME)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def chooseNAME(self, event) :
@@ -1168,19 +1163,19 @@ class TutorDetail(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#800000")
+        self.configure(bg = "#f44336")
         self.controller = controller
 
-        DetailTitle = tk.Label(self, text = "Tutor's Details", font = 22, fg="white", bg = "#800000")
-        DetailTitle.pack(padx = 10, pady = 10)
+        DetailTitle = tk.Label(self, text = "Tutor's Details", font = titleFont, fg="black", bg = "#ba000d")
+        DetailTitle.pack(fill = "x")
 
-        Name = tk.Label(self, textvariable = NameOfTutor, fg="white", bg = "#800000")
-        Contact = tk.Label(self, textvariable = ConOfTutor, fg="white", bg = "#800000")
-        EContact = tk.Label(self, textvariable = EmConOfTutor, fg="white", bg = "#800000")
-        Subject = tk.Label(self, textvariable = SubOfTutor, fg="white", bg = "#800000")
-        TuitionFees = tk.Label(self, textvariable = FeeOfTutor, fg="white", bg = "#800000")
-        Outstanding = tk.Label(self, textvariable = OutFeeOfTutor, fg="white", bg = "#800000")
-        DateRegister = tk.Label(self, textvariable = REGdateTutor, fg="white", bg = "#800000")
+        Name = tk.Label(self, textvariable = NameOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        Contact = tk.Label(self, textvariable = ConOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        EContact = tk.Label(self, textvariable = EmConOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        Subject = tk.Label(self, textvariable = SubOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        TuitionFees = tk.Label(self, textvariable = FeeOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        Outstanding = tk.Label(self, textvariable = OutFeeOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        DateRegister = tk.Label(self, textvariable = REGdateTutor, fg="black", bg = "#f44336", font = subtitleFont)
 
         Name.pack(side = "top")
         Contact.pack(side = "top")
@@ -1190,17 +1185,16 @@ class TutorDetail(tk.Frame):
         Outstanding.pack(side = "top")
         DateRegister.pack(side = "top")
 
-
-        SalaryButton = tk.Button(self, text="Salary", command = lambda: self.salarypage(), width = 15, height = 2, bg = "white")
+        SalaryButton = tk.Button(self, text="Salary", command = lambda: self.salarypage(), width = 15, height = 2, bg = "white", font = subbuttonFont)
         SalaryButton.pack(padx = 10, pady = 10)
 
-        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Tutor), width = 15, height = 2, bg = "white")
+        backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Tutor), width = 10, bg = "white", font = subbuttonFont)
         backButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        deleteButton = tk.Button(self, text="Delete Tutor", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red")
+        deleteButton = tk.Button(self, text="DELETE TUTOR", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", font = ("Roboto", 12, "bold"))
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
 
 
@@ -1234,16 +1228,16 @@ class TutorDetail(tk.Frame):
 
         OutstandingMonths = float(TutorData[counter][4])/ float(TutorData[counter][3])
 
-        Outstanding = tk.Label(salarywindow, textvariable = OutFeeOfTutor, bg = "white")
+        Outstanding = tk.Label(salarywindow, textvariable = OutFeeOfTutor, bg = "white", font = subtitleFont)
         Outstanding.pack(side = "top")
 
-        OutMsg = tk.Label(salarywindow, text ="This tutor has outstanding salary for %d months !" % OutstandingMonths, bg = "white")
+        OutMsg = tk.Label(salarywindow, text ="This tutor has outstanding salary for %d months !" % OutstandingMonths, bg = "white", font = subtitleFont)
         OutMsg.pack(padx = 10, pady = 8)
 
         def pay():
             TutorData[counter][4] = float(TutorData[counter][4])- float(salary.get())
 
-            Balance = tk.Label(salarywindow, text ="The outstanding balance for this tutor is RM%.2f " % TutorData[counter][4], bg = "white")
+            Balance = tk.Label(salarywindow, text ="The outstanding balance for this tutor is RM%.2f " % TutorData[counter][4], bg = "white", font = subtitleFont)
             Balance.pack(padx = 10, pady = 8)
 
             paydate = dt.datetime.now()
@@ -1262,17 +1256,17 @@ class TutorDetail(tk.Frame):
 
             OutFeeOfTutor.set("Outstanding Fees: RM%s" % TutorData[counter][4])
 
-            quitButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, width = 15, height = 2, bg = "white")
+            quitButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, width = 10, bg = "white", font = subbuttonFont)
             quitButton.pack(side = "bottom", padx = 10, pady = 10)
 
         if TutorData[counter][4] != "0.0":
-            paymentLabel = tk.Label(salarywindow, text = "Payment", bg = "white")
+            paymentLabel = tk.Label(salarywindow, text = "Payment", bg = "white", font = subtitleFont)
             paymentLabel.pack(padx = 10, pady = 8)
 
             paymentEntry = tk.Entry(salarywindow, width = 10, textvariable = salary)
             paymentEntry.pack(padx = 10, pady = 8)
 
-            payButton = tk.Button(salarywindow, text = "Pay", command = pay, width = 15, height = 2, bg = "white"  )
+            payButton = tk.Button(salarywindow, text = "Pay", command = pay, width = 10, bg = "white", font = subbuttonFont)
             payButton.pack(side = "bottom", padx = 10, pady = 10)
 
         salary.set("")
@@ -1326,9 +1320,9 @@ class TutorDetail(tk.Frame):
 
             self.controller.show_frame(Tutor)
 
-        sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this tutor?", bg = "white", font = 16)
-        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", command = lambda: delete())
-        noButton = tk.Button(confirmationDEL, text="No", bg = "white", command = lambda: confirmationDEL.destroy())
+        sure = tk.Label(confirmationDEL, text="Are you sure you want to delete this tutor?", bg = "white", font = subtitleFont)
+        yesButton = tk.Button(confirmationDEL, text="Yes", bg = "white", font = subbuttonFont, command = lambda: delete())
+        noButton = tk.Button(confirmationDEL, text="No", bg = "white", font = subbuttonFont, command = lambda: confirmationDEL.destroy())
 
         sure.pack()
         yesButton.pack(padx = 10, pady = 10)
