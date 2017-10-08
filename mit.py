@@ -480,8 +480,14 @@ class StudentRegistration(tk.Frame):
         SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg = "black", bg = "#f44336", font = subtitleFont)
 
         checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+<<<<<<< HEAD
+        checkbuttonPhy = tk.Checkbutton(self, text = "Physics                           ", variable=PhyREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+        checkbuttonChem = tk.Checkbutton(self, text = "Chemistry                       ", variable=ChemREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+
+=======
         checkbuttonPhy = tk.Checkbutton(self, text = "Physics", variable=PhyREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
         checkbuttonChem = tk.Checkbutton(self, text = "Chemistry", variable=ChemREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+>>>>>>> parent of fe2f341... Change main colour to blue
 
         NameOfStudREGLabel.pack()
         NameOfStudREGEntry.pack(padx = 10, pady = 8)
@@ -641,9 +647,16 @@ class TutorRegistration(tk.Frame):
         EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
         SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg = "white", bg = "#f44336", font = subtitleFont)
 
+<<<<<<< HEAD
+
+        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, bg = "#f44336", font = subtitleFont)
+        checkbuttonTPhy = tk.Checkbutton(self, text="Physics                           ", variable=TPhyREG, bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry                       ", variable=TChemREG, bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+=======
         checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, fg = "white", bg = "#f44336", font = subtitleFont)
         checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, fg = "white", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
         checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, fg = "white", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+>>>>>>> parent of fe2f341... Change main colour to blue
 
         NameOfTutorREGLabel.pack()
         NameOfTutorREGEntry.pack(padx = 10, pady = 8)
