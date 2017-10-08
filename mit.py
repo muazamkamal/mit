@@ -191,6 +191,9 @@ class Login(tk.Frame):
         self.configure(bg = "#3f51b5")
         self.controller = controller
 
+        usrnm.set("")
+        pswd.set("")
+
         LoginTitle = tk.Label(self, text = "Login", font = titleFont, fg="white", bg = "#002984")
         LoginTitle.pack(fill = "x")
 
@@ -308,6 +311,9 @@ class Signup(tk.Frame):
 
         self.configure(bg = "#3f51b5")
         self.controller = controller
+
+        usrnmREG.set("")
+        pswdREG.set("")
 
         SignupTitle = tk.Label(self, text = "Sign Up", fg = "white", bg = "#002984", font = titleFont)
         SignupTitle.pack(fill = "x")
@@ -471,6 +477,13 @@ class StudentRegistration(tk.Frame):
         self.configure(bg = "#3f51b5")
         self.controller = controller
 
+        NameOfStudREG.set("")
+        ConOfStudREG.set("")
+        EmConOfStudREG.set("")
+        AddMathREG.set(0)
+        PhyREG.set(0)
+        ChemREG.set(0)
+
         RegistrationTitle = tk.Label(self, text = "Student Registration", font = titleFont, fg="white", bg = "#002984")
         RegistrationTitle.pack(fill = "x")
 
@@ -632,6 +645,13 @@ class TutorRegistration(tk.Frame):
 
         self.configure(bg = "#3f51b5")
         self.controller = controller
+
+        NameOfTutorREG.set("")
+        ConOfTutorREG.set("")
+        EmConOfTutorREG.set("")
+        TAddMathREG.set(0)
+        TPhyREG.set(0)
+        TChemREG.set(0)
 
         vcmdNum = (self.register(is_Phone), "%S")
         vcmdLetter = (self.register(is_Letter), "%S")
@@ -941,6 +961,8 @@ class StudentDetail(tk.Frame):
         paymentwindow.title("Payment")
         paymentwindow.resizable(False,False)
 
+        payment.set("")
+
         # Opening database
         checkDB("studentDB.txt")
         studentdb = open("studentDB.txt", "r")
@@ -1174,6 +1196,8 @@ class TutorDetail(tk.Frame):
         self.configure(bg = "#3f51b5")
         self.controller = controller
 
+        self.vcmdPay = (self.register(is_Pay), "%S")
+
         DetailTitle = tk.Label(self, text = "Tutor's Details", font = titleFont, fg="white", bg = "#002984")
         DetailTitle.pack(fill = "x")
 
@@ -1212,6 +1236,8 @@ class TutorDetail(tk.Frame):
         salarywindow.grab_set()
         salarywindow.title("Salary")
         salarywindow.resizable(False,False)
+
+        salary.set("")
 
         # Opening database
         checkDB("tutorDB.txt")
@@ -1271,7 +1297,7 @@ class TutorDetail(tk.Frame):
             paymentLabel = tk.Label(salarywindow, text = "Payment", bg = "white", font = subtitleFont)
             paymentLabel.pack(padx = 10, pady = 8)
 
-            paymentEntry = tk.Entry(salarywindow, width = 10, textvariable = salary)
+            paymentEntry = tk.Entry(salarywindow, width = 10, textvariable = salary, validate = "key", validatecommand = self.vcmdPay)
             paymentEntry.pack(padx = 10, pady = 8)
 
             payButton = tk.Button(salarywindow, text = "Pay", command = pay, width = 10, bg = "white", font = subbuttonFont)
