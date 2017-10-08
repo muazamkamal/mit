@@ -31,6 +31,7 @@ def is_Lower(x):
     else:
         return False
 
+# Check if input only numbers and "."
 def is_Pay(x):
     try:
         x = int(x)
@@ -40,6 +41,14 @@ def is_Pay(x):
             return True
         else:
             return False
+
+# Check if valid format for input
+def is_Money(x):
+    try:
+        float(x)
+        return True
+    except:
+        return False
 
 titleFont = ("Roboto", "36", "bold")
 subtitleFont = ("Roboto", "12")
@@ -101,8 +110,8 @@ class Management(tk.Tk):
         global payment
         global salary
 
-        payment = tk.IntVar()
-        salary = tk.IntVar()
+        payment = tk.StringVar()
+        salary = tk.StringVar()
 
         global NameOfTutorREG
         global ConOfTutorREG
@@ -993,29 +1002,47 @@ class StudentDetail(tk.Frame):
         OutMsg.pack(padx = 10, pady = 8)
 
         def pay():
-            StudentData[index][4] = float(StudentData[index][4])- float(payment.get())
+            if is_Money(payment.get()):
+                StudentData[index][4] = float(StudentData[index][4])- float(payment.get())
 
-            Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white", font = subtitleFont)
-            Balance.pack(padx = 10, pady = 8)
+                Balance = tk.Label(paymentwindow, text ="The outstanding balance for this student is RM%.2f " % StudentData[index][4], bg = "white", font = subtitleFont)
+                Balance.pack(padx = 10, pady = 8)
 
-            paydate = dt.datetime.now()
-            StudentData[index][6] = str(paydate.month)
+                paydate = dt.datetime.now()
+                StudentData[index][6] = str(paydate.month)
 
-            studentdb = open("studentDB.txt", "w")
-            for i in range(len(StudentData)):
-                for j in range(len(StudentData[i]) - 1):
-                    studentdb.write(str(StudentData[i][j]) + ", ")
+                studentdb = open("studentDB.txt", "w")
+                for i in range(len(StudentData)):
+                    for j in range(len(StudentData[i]) - 1):
+                        studentdb.write(str(StudentData[i][j]) + ", ")
 
-                studentdb.write("\n")
+                    studentdb.write("\n")
 
-            studentdb.close()
+                studentdb.close()
 
-            payment.set("")
+                payment.set("")
 
-            OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
+                OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
 
-            quitButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, width = 10, bg = "white", font = subbuttonFont)
-            quitButton.pack(side = "bottom", padx = 10, pady = 10)
+                doneButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, width = 10, bg = "white", font = subbuttonFont)
+                doneButton.pack(side = "bottom", padx = 10, pady = 10)
+            else:
+                # Error if wrong input
+                errorPayFormat = tk.Toplevel(bg = "white")
+                errorPayFormat.grab_set()
+                errorPayFormat.title("Format Error")
+                errorPayFormat.resizable(False,False)
+
+                errorPayFormatmsg = tk.Label(errorPayFormat, text = "Please enter a valid payment!", bg = "white", font = subtitleFont)
+                errorPayFormatmsg.pack(padx = 10, pady = 10)
+
+                dismissButton = tk.Button(errorPayFormat, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorPayFormat.destroy)
+                dismissButton.pack(padx = 10, pady = 10)
+
+                self.wait_window(errorPayFormat)
+                errorPayFormat.grab_release()
+
+                payment.set("")
 
         if StudentData[index][4] != "0.0":
             paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white", font = subtitleFont)
@@ -1269,29 +1296,47 @@ class TutorDetail(tk.Frame):
         OutMsg.pack(padx = 10, pady = 8)
 
         def pay():
-            TutorData[counter][4] = float(TutorData[counter][4])- float(salary.get())
+            if is_Money(salary.get()):
+                TutorData[counter][4] = float(TutorData[counter][4])- float(salary.get())
 
-            Balance = tk.Label(salarywindow, text ="The outstanding balance for this tutor is RM%.2f " % TutorData[counter][4], bg = "white", font = subtitleFont)
-            Balance.pack(padx = 10, pady = 8)
+                Balance = tk.Label(salarywindow, text ="The outstanding balance for this tutor is RM%.2f " % TutorData[counter][4], bg = "white", font = subtitleFont)
+                Balance.pack(padx = 10, pady = 8)
 
-            paydate = dt.datetime.now()
-            TutorData[counter][6] = str(paydate.month)
+                paydate = dt.datetime.now()
+                TutorData[counter][6] = str(paydate.month)
 
-            tutordb = open("tutorDB.txt", "w")
-            for i in range(len(TutorData)):
-                for j in range(len(TutorData[i]) - 1):
-                    tutordb.write(str(TutorData[i][j]) + ", ")
+                tutordb = open("tutorDB.txt", "w")
+                for i in range(len(TutorData)):
+                    for j in range(len(TutorData[i]) - 1):
+                        tutordb.write(str(TutorData[i][j]) + ", ")
 
-                tutordb.write("\n")
+                    tutordb.write("\n")
 
-            tutordb.close()
+                tutordb.close()
 
-            salary.set("")
+                salary.set("")
 
-            OutFeeOfTutor.set("Outstanding Fees: RM%s" % TutorData[counter][4])
+                OutFeeOfTutor.set("Outstanding Fees: RM%s" % TutorData[counter][4])
 
-            quitButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, width = 10, bg = "white", font = subbuttonFont)
-            quitButton.pack(side = "bottom", padx = 10, pady = 10)
+                doneButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, width = 10, bg = "white", font = subbuttonFont)
+                doneButton.pack(side = "bottom", padx = 10, pady = 10)
+            else:
+                # Error if wrong input
+                errorPayFormat = tk.Toplevel(bg = "white")
+                errorPayFormat.grab_set()
+                errorPayFormat.title("Format Error")
+                errorPayFormat.resizable(False,False)
+
+                errorPayFormatmsg = tk.Label(errorPayFormat, text = "Please enter a valid payment!", bg = "white", font = subtitleFont)
+                errorPayFormatmsg.pack(padx = 10, pady = 10)
+
+                dismissButton = tk.Button(errorPayFormat, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorPayFormat.destroy)
+                dismissButton.pack(padx = 10, pady = 10)
+
+                self.wait_window(errorPayFormat)
+                errorPayFormat.grab_release()
+
+                salary.set("")
 
         if TutorData[counter][4] != "0.0":
             paymentLabel = tk.Label(salarywindow, text = "Payment", bg = "white", font = subtitleFont)
