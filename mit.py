@@ -160,10 +160,10 @@ class Welcome(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        WelcomeTitle = tk.Label(self, text = "M.I.T", font = titleFont, fg="black", bg = "#ba000d")
+        WelcomeTitle = tk.Label(self, text = "M.I.T", font = titleFont, fg="white", bg = "#002984")
         WelcomeTitle.pack(fill = "x")
 
         loginButton = tk.Button(self, text = "Login", command = lambda: controller.show_frame(Login), width = 15, height = 2, font = buttonFont, bg = "white")
@@ -182,17 +182,17 @@ class Login(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        LoginTitle = tk.Label(self, text = "Login", font = titleFont, fg="black", bg = "#ba000d")
+        LoginTitle = tk.Label(self, text = "Login", font = titleFont, fg="white", bg = "#002984")
         LoginTitle.pack(fill = "x")
 
         vcmdLower = (self.register(is_Lower), "%S")
 
-        usernameLabel = tk.Label(self, text = "Username", fg = "black", bg = "#f44336", font = subtitleFont)
+        usernameLabel = tk.Label(self, text = "Username", fg = "white", bg = "#3f51b5", font = subtitleFont)
         usernameEntry = tk.Entry(self, width = 25, textvariable = usrnm, validate = "key", validatecommand = vcmdLower)
-        passwordLabel = tk.Label(self, text = "Password", fg = "black", bg = "#f44336", font = subtitleFont)
+        passwordLabel = tk.Label(self, text = "Password", fg = "white", bg = "#3f51b5", font = subtitleFont)
         passwordEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswd)
         passwordEntry.bind('<Return>', lambda event: self.auth())
 
@@ -300,17 +300,17 @@ class Signup(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        SignupTitle = tk.Label(self, text = "Sign Up", fg = "black", bg = "#ba000d", font = titleFont)
+        SignupTitle = tk.Label(self, text = "Sign Up", fg = "white", bg = "#002984", font = titleFont)
         SignupTitle.pack(fill = "x")
 
         vcmdLower = (self.register(is_Lower), "%S")
 
-        usernameREGLabel = tk.Label(self, text = "Username", fg = "black", bg = "#f44336", font = subtitleFont)
+        usernameREGLabel = tk.Label(self, text = "Username", fg = "white", bg = "#3f51b5", font = subtitleFont)
         usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG, validate = "key", validatecommand = vcmdLower)
-        passwordREGLabel = tk.Label(self, text = "Password", fg = "black", bg = "#f44336", font = subtitleFont)
+        passwordREGLabel = tk.Label(self, text = "Password", fg = "white", bg = "#3f51b5", font = subtitleFont)
         passwordREGEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswdREG)
 
         usernameREGLabel.pack()
@@ -421,10 +421,10 @@ class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        MenuTitle = tk.Label(self, text = "Main Menu", font = titleFont, fg = "black", bg = "#ba000d")
+        MenuTitle = tk.Label(self, text = "Main Menu", font = titleFont, fg = "white", bg = "#002984")
         MenuTitle.pack(fill = "x")
 
         registrationButton = tk.Button(self, text = "Registration", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white", font = buttonFont)
@@ -443,10 +443,10 @@ class Registration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        RegistrationTitle = tk.Label(self, text = "Registration", font = titleFont, fg = "black", bg = "#ba000d")
+        RegistrationTitle = tk.Label(self, text = "Registration", font = titleFont, fg = "white", bg = "#002984")
         RegistrationTitle.pack(fill = "x")
 
         StudentRegistrationButton = tk.Button(self, text = "Student", command = lambda: controller.show_frame(StudentRegistration), width = 15, height = 2, bg = "white", font = subbuttonFont)
@@ -462,26 +462,32 @@ class StudentRegistration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        RegistrationTitle = tk.Label(self, text = "Student Registration", font = titleFont, fg="black", bg = "#ba000d")
+        RegistrationTitle = tk.Label(self, text = "Student Registration", font = titleFont, fg="white", bg = "#002984")
         RegistrationTitle.pack(fill = "x")
 
         vcmdNum = (self.register(is_Phone), "%S")
         vcmdLetter = (self.register(is_Letter), "%S")
 
-        NameOfStudREGLabel = tk.Label(self, text = " Full Name :", fg = "black", bg = "#f44336", font = subtitleFont)
+        NameOfStudREGLabel = tk.Label(self, text = " Full Name :", fg = "white", bg = "#3f51b5", font = subtitleFont)
         NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG, validate = "key", validatecommand = vcmdLetter)
-        ConOfStudREGLabel = tk.Label(self, text = "Contact :", fg = "black", bg = "#f44336", font = subtitleFont)
+        ConOfStudREGLabel = tk.Label(self, text = "Contact :", fg = "white", bg = "#3f51b5", font = subtitleFont)
         ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG, validate = "key", validatecommand = vcmdNum)
-        EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact :", fg = "black", bg = "#f44336", font = subtitleFont)
+        EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact :", fg = "white", bg = "#3f51b5", font = subtitleFont)
         EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG, validate = "key", validatecommand = vcmdNum)
-        SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg = "black", bg = "#f44336", font = subtitleFont)
+        SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg = "white", bg = "#3f51b5", font = subtitleFont)
 
+<<<<<<< HEAD
         checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
         checkbuttonPhy = tk.Checkbutton(self, text = "Physics                           ", variable=PhyREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
         checkbuttonChem = tk.Checkbutton(self, text = "Chemistry                       ", variable=ChemREG, fg = "black", bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+=======
+        checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonPhy = tk.Checkbutton(self, text = "Physics", variable=PhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonChem = tk.Checkbutton(self, text = "Chemistry", variable=ChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+>>>>>>> bcdfc5c65e27d7fd17dbac7678e13c3563f37f0b
 
         NameOfStudREGLabel.pack()
         NameOfStudREGEntry.pack(padx = 10, pady = 8)
@@ -624,26 +630,32 @@ class TutorRegistration(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
         vcmdNum = (self.register(is_Phone), "%S")
         vcmdLetter = (self.register(is_Letter), "%S")
 
-        RegistrationTitle = tk.Label(self, text = " Tutor Registration", font = titleFont, fg="black", bg = "#ba000d")
+        RegistrationTitle = tk.Label(self, text = " Tutor Registration", font = titleFont, fg="white", bg = "#002984")
         RegistrationTitle.pack(fill = "x")
 
-        NameOfTutorREGLabel = tk.Label(self, text = " Full Name :", fg = "white", bg = "#f44336", font = subtitleFont)
+        NameOfTutorREGLabel = tk.Label(self, text = " Full Name :", fg = "white", bg = "#3f51b5", font = subtitleFont)
         NameOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = NameOfTutorREG, validate = "key", validatecommand = vcmdLetter)
-        ConOfTutorREGLabel = tk.Label(self, text = "Contact :", fg = "white", bg = "#f44336", font = subtitleFont)
+        ConOfTutorREGLabel = tk.Label(self, text = "Contact :", fg = "white", bg = "#3f51b5", font = subtitleFont)
         ConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = ConOfTutorREG, validate = "key", validatecommand = vcmdNum)
-        EmConOfTutorREGLabel = tk.Label(self, text = "Emergency Contact :", fg  ="white", bg = "#f44336", font = subtitleFont)
+        EmConOfTutorREGLabel = tk.Label(self, text = "Emergency Contact :", fg  ="white", bg = "#3f51b5", font = subtitleFont)
         EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
-        SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg = "white", bg = "#f44336", font = subtitleFont)
+        SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg = "white", bg = "#3f51b5", font = subtitleFont)
 
+<<<<<<< HEAD
         checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, bg = "#f44336", font = subtitleFont)
         checkbuttonTPhy = tk.Checkbutton(self, text="Physics                           ", variable=TPhyREG, bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
         checkbuttonTChem = tk.Checkbutton(self, text="Chemistry                       ", variable=TChemREG, bg = "#f44336", activebackground = "#f44336", font = subtitleFont)
+=======
+        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, fg = "white", bg = "#3f51b5", font = subtitleFont)
+        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+>>>>>>> bcdfc5c65e27d7fd17dbac7678e13c3563f37f0b
 
         NameOfTutorREGLabel.pack()
         NameOfTutorREGEntry.pack(padx = 10, pady = 8)
@@ -787,10 +799,10 @@ class Student(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        StudentTitle = tk.Label(self, text="Student List", font = titleFont, fg="black", bg = "#ba000d")
+        StudentTitle = tk.Label(self, text="Student List", font = titleFont, fg="white", bg = "#002984")
         StudentTitle.pack(fill = "x")
 
         # Opening database
@@ -892,19 +904,19 @@ class StudentDetail(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        DetailTitle = tk.Label(self, text = "Student's Details", font = titleFont, fg="black", bg = "#ba000d")
+        DetailTitle = tk.Label(self, text = "Student's Details", font = titleFont, fg="white", bg = "#002984")
         DetailTitle.pack(fill = "x")
 
-        Name = tk.Label(self, textvariable = NameOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        Contact = tk.Label(self, textvariable = ConOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        EContact = tk.Label(self, textvariable = EmConOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        Subject = tk.Label(self, textvariable = SubOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        TuitionFees = tk.Label(self, textvariable = FeeOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        Outstanding = tk.Label(self, textvariable = OutFeeOfStud, fg="black", bg = "#f44336", font = subtitleFont)
-        DateRegister = tk.Label(self, textvariable = REGdateStud, fg="black", bg = "#f44336", font = subtitleFont)
+        Name = tk.Label(self, textvariable = NameOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Contact = tk.Label(self, textvariable = ConOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        EContact = tk.Label(self, textvariable = EmConOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Subject = tk.Label(self, textvariable = SubOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        TuitionFees = tk.Label(self, textvariable = FeeOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Outstanding = tk.Label(self, textvariable = OutFeeOfStud, fg="white", bg = "#3f51b5", font = subtitleFont)
+        DateRegister = tk.Label(self, textvariable = REGdateStud, fg="white", bg = "#3f51b5", font = subtitleFont)
 
         Name.pack(side = "top")
         Contact.pack(side = "top")
@@ -923,7 +935,7 @@ class StudentDetail(tk.Frame):
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        deleteButton = tk.Button(self, text="DELETE STUDENT", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", font = ("Roboto", 12,"bold"))
+        deleteButton = tk.Button(self, text="DELETE STUDENT", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", fg = "white", font = ("Roboto", 12,"bold"))
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def paymentpage(self):
@@ -1059,10 +1071,10 @@ class Tutor(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        TutorTitle = tk.Label(self, text="Tutor List", font = titleFont, fg="black", bg = "#ba000d")
+        TutorTitle = tk.Label(self, text="Tutor List", font = titleFont, fg="white", bg = "#002984")
         TutorTitle.pack(fill = "x")
 
         # Opening database
@@ -1163,19 +1175,19 @@ class TutorDetail(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.configure(bg = "#f44336")
+        self.configure(bg = "#3f51b5")
         self.controller = controller
 
-        DetailTitle = tk.Label(self, text = "Tutor's Details", font = titleFont, fg="black", bg = "#ba000d")
+        DetailTitle = tk.Label(self, text = "Tutor's Details", font = titleFont, fg="white", bg = "#002984")
         DetailTitle.pack(fill = "x")
 
-        Name = tk.Label(self, textvariable = NameOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        Contact = tk.Label(self, textvariable = ConOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        EContact = tk.Label(self, textvariable = EmConOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        Subject = tk.Label(self, textvariable = SubOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        TuitionFees = tk.Label(self, textvariable = FeeOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        Outstanding = tk.Label(self, textvariable = OutFeeOfTutor, fg="black", bg = "#f44336", font = subtitleFont)
-        DateRegister = tk.Label(self, textvariable = REGdateTutor, fg="black", bg = "#f44336", font = subtitleFont)
+        Name = tk.Label(self, textvariable = NameOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Contact = tk.Label(self, textvariable = ConOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        EContact = tk.Label(self, textvariable = EmConOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Subject = tk.Label(self, textvariable = SubOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        TuitionFees = tk.Label(self, textvariable = FeeOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        Outstanding = tk.Label(self, textvariable = OutFeeOfTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
+        DateRegister = tk.Label(self, textvariable = REGdateTutor, fg="white", bg = "#3f51b5", font = subtitleFont)
 
         Name.pack(side = "top")
         Contact.pack(side = "top")
@@ -1194,7 +1206,7 @@ class TutorDetail(tk.Frame):
         menuButton = tk.Button(self, text="Main Menu", command = lambda: controller.show_frame(MainMenu), width = 10, bg = "white", font = subbuttonFont)
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
-        deleteButton = tk.Button(self, text="DELETE TUTOR", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", font = ("Roboto", 12, "bold"))
+        deleteButton = tk.Button(self, text="DELETE TUTOR", command = lambda: self.confirmdel(), width = 15, height = 2, bg = "red", fg = "white", font = ("Roboto", 12, "bold"))
         deleteButton.pack(side = "bottom", padx = 10, pady = 10)
 
 
