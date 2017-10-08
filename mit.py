@@ -31,6 +31,16 @@ def is_Lower(x):
     else:
         return False
 
+def is_Pay(x):
+    try:
+        x = int(x)
+        return True
+    except:
+        if x == ".":
+            return True
+        else:
+            return False
+
 titleFont = ("Roboto", "36", "bold")
 subtitleFont = ("Roboto", "12")
 buttonFont = ("Roboto", "20")
@@ -71,8 +81,6 @@ class Management(tk.Tk):
         AddMathREG = tk.IntVar()
         PhyREG = tk.IntVar()
         ChemREG = tk.IntVar()
-        ConOfStudREG.set("0")
-        EmConOfStudREG.set("0")
 
         global NameOfStud
         global ConOfStud
@@ -109,8 +117,6 @@ class Management(tk.Tk):
         TAddMathREG = tk.IntVar()
         TPhyREG = tk.IntVar()
         TChemREG = tk.IntVar()
-        ConOfTutorREG.set("0")
-        EmConOfTutorREG.set("0")
 
         global NameOfTutor
         global ConOfTutor
@@ -479,9 +485,9 @@ class StudentRegistration(tk.Frame):
         EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG, validate = "key", validatecommand = vcmdNum)
         SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg = "white", bg = "#3f51b5", font = subtitleFont)
 
-        checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
-        checkbuttonPhy = tk.Checkbutton(self, text = "Physics", variable=PhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
-        checkbuttonChem = tk.Checkbutton(self, text = "Chemistry", variable=ChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonAddMath = tk.Checkbutton(self, text = "Additional Mathematics", variable=AddMathREG, fg = "white", indicatoron = False, bg = "#3f51b5", selectcolor = "#757de8", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonPhy = tk.Checkbutton(self, text = "Physics", variable=PhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont, indicatoron = False, selectcolor = "#757de8")
+        checkbuttonChem = tk.Checkbutton(self, text = "Chemistry", variable=ChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont, indicatoron = False, selectcolor = "#757de8")
 
         NameOfStudREGLabel.pack()
         NameOfStudREGEntry.pack(padx = 10, pady = 8)
@@ -612,11 +618,11 @@ class StudentRegistration(tk.Frame):
             successStudREG.grab_release()
 
             NameOfStudREG.set("")
-            ConOfStudREG.set("0")
-            EmConOfStudREG.set("0")
-            AddMathREG.set(0)
-            PhyREG.set(0)
-            ChemREG.set(0)
+            ConOfStudREG.set("")
+            EmConOfStudREG.set("")
+            AddMathREG.set("")
+            PhyREG.set("")
+            ChemREG.set("")
 
             student_list_box.insert("end", registerName)
 
@@ -641,9 +647,9 @@ class TutorRegistration(tk.Frame):
         EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
         SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg = "white", bg = "#3f51b5", font = subtitleFont)
 
-        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, fg = "white", bg = "#3f51b5", font = subtitleFont)
-        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
-        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont)
+        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5",font = subtitleFont, indicatoron = False, selectcolor = "#757de8")
+        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont, indicatoron = False, selectcolor = "#757de8")
+        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, fg = "white", bg = "#3f51b5", activebackground = "#3f51b5", font = subtitleFont, indicatoron = False, selectcolor = "#757de8")
 
         NameOfTutorREGLabel.pack()
         NameOfTutorREGEntry.pack(padx = 10, pady = 8)
@@ -895,6 +901,8 @@ class StudentDetail(tk.Frame):
         self.configure(bg = "#3f51b5")
         self.controller = controller
 
+        self.vcmdPay = (self.register(is_Pay), "%S")
+
         DetailTitle = tk.Label(self, text = "Student's Details", font = titleFont, fg="white", bg = "#002984")
         DetailTitle.pack(fill = "x")
 
@@ -991,7 +999,7 @@ class StudentDetail(tk.Frame):
             paymentLabel = tk.Label(paymentwindow, text = "Payment", bg = "white", font = subtitleFont)
             paymentLabel.pack(padx = 10, pady = 8)
 
-            paymentEntry = tk.Entry(paymentwindow, width = 10, textvariable = payment)
+            paymentEntry = tk.Entry(paymentwindow, width = 10, textvariable = payment, validate = "all", validatecommand = self.vcmdPay)
             paymentEntry.pack(padx = 10, pady = 8)
 
             payButton = tk.Button(paymentwindow, text = "Pay", command = pay, width = 10, bg = "white", font = subbuttonFont)
