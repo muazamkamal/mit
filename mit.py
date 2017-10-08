@@ -9,6 +9,31 @@ def checkDB(dbname):
         temp = open(dbname, "w")
         temp.close()
 
+# Check if input includes only numbers and "-"
+def is_Phone(x):
+    try:
+        x = int(x)
+        return True
+    except:
+        if x == "-":
+            return True
+        else:
+            return False
+
+# Check if input only includes letters and spaces
+def is_Letter(x):
+    if x.isalpha() == True or x == " ":
+        return True
+    else:
+        return False
+
+# Check if input only lowercase letter
+def is_Lower(x):
+    if x.islower() == True:
+        return True
+    else:
+        return False
+
 class Management(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -162,10 +187,13 @@ class Login(tk.Frame):
         LoginTitle = tk.Label(self, text="Login", font = 22, bg = "white")
         LoginTitle.pack(padx = 10, pady = 10)
 
+        vcmdLower = (self.register(is_Lower), "%S")
+
         usernameLabel = tk.Label(self, text = "Username", bg = "white")
-        usernameEntry = tk.Entry(self, width = 25, textvariable = usrnm)
+        usernameEntry = tk.Entry(self, width = 25, textvariable = usrnm, validate = "key", validatecommand = vcmdLower)
         passwordLabel = tk.Label(self, text = "Password", bg = "white")
         passwordEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswd)
+        passwordEntry.bind('<Return>', lambda event: self.auth())
 
         usernameLabel.pack()
         usernameEntry.pack()
@@ -280,8 +308,10 @@ class Signup(tk.Frame):
         SignupTitle = tk.Label(self, text="Sign Up", font = 22, bg = "white")
         SignupTitle.pack(padx = 10, pady = 10)
 
+        vcmdLower = (self.register(is_Lower), "%S")
+
         usernameREGLabel = tk.Label(self, text = "Username", bg = "white")
-        usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG)
+        usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG, validate = "key", validatecommand = vcmdLower)
         passwordREGLabel = tk.Label(self, text = "Password", bg = "white")
         passwordREGEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswdREG)
 
@@ -299,6 +329,24 @@ class Signup(tk.Frame):
     def signup(self):
         signupUsrnm = usrnmREG.get()
         signupPswd = pswdREG.get()
+
+        checkDB("credentialDB.txt")
+        creds = open("credentialDB.txt", "r")
+        temp = creds.readlines()
+
+        credsDB = []
+
+        for i in range(len(temp)):
+            credsDB.append(temp[i].replace("\n", " ").split(", "))
+
+        duplicateUsrnm = 0
+
+        for i in range(len(credsDB)):
+            if signupUsrnm == credsDB[i][0]:
+                duplicateUsrnm = 1
+                break
+            else:
+                duplicateUsrnm = 0
 
         if signupUsrnm == "" or signupPswd == "":
             # Error if no username/password entered by user
@@ -320,6 +368,26 @@ class Signup(tk.Frame):
             usrnmREG.set("")
             pswdREG.set("")
 
+        elif duplicateUsrnm == 1:
+            # Error if username already exist
+            errorDUP = tk.Toplevel(bg = "white")
+            errorDUP.grab_set()
+            errorDUP.title("Sign up Error")
+            errorDUP.geometry("250x100")
+            errorDUP.resizable(False,False)
+
+            errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white")
+            errorREGmsg.pack(padx = 10, pady = 10)
+
+            dismissButton = tk.Button(errorDUP, text = "Dismiss", bg = "white", command = errorDUP.destroy)
+            dismissButton.pack(padx = 10, pady = 10)
+
+            self.wait_window(errorDUP)
+            errorDUP.grab_release()
+
+            usrnmREG.set("")
+            pswdREG.set("")
+
         else:
             # Add new username and password to database
             creds=open("credentialDB.txt","a+")
@@ -333,7 +401,7 @@ class Signup(tk.Frame):
             pswdREG.set("")
 
             # Redirect to Login frame
-            self.controller.show_frame(Login)
+            self.controller.show_frame(Welcome)
 
             # Display success registration message
             successREG = tk.Toplevel(bg = "white")
@@ -402,12 +470,15 @@ class StudentRegistration(tk.Frame):
         RegistrationTitle = tk.Label(self, text="Student Registration", font = 22, bg = "white")
         RegistrationTitle.pack(padx = 10, pady = 10)
 
+        vcmdNum = (self.register(is_Phone), "%S")
+        vcmdLetter = (self.register(is_Letter), "%S")
+
         NameOfStudREGLabel = tk.Label(self, text = " Full Name", bg = "white")
-        NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG)
+        NameOfStudREGEntry = tk.Entry(self, width = 25, textvariable = NameOfStudREG, validate = "key", validatecommand = vcmdLetter)
         ConOfStudREGLabel = tk.Label(self, text = "Contact", bg = "white")
-        ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG)
+        ConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = ConOfStudREG, validate = "key", validatecommand = vcmdNum)
         EmConOfStudREGLabel = tk.Label(self, text = "Emergency Contact", bg = "white")
-        EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG)
+        EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG, validate = "key", validatecommand = vcmdNum)
         SubOfStudREGLabel = tk.Label(self, text = "Subject", bg = "white")
 
         checkbuttonAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=AddMathREG, bg = "white")
@@ -435,7 +506,7 @@ class StudentRegistration(tk.Frame):
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def registerstudent(self):
-        registerName = NameOfStudREG.get()
+        registerName = NameOfStudREG.get().upper()
         registerCon = ConOfStudREG.get()
         registerEm = EmConOfStudREG.get()
         registerAddMath = AddMathREG.get()
@@ -449,7 +520,6 @@ class StudentRegistration(tk.Frame):
             (registerAddMath == 0 and registerPhy == 0 and
             registerChem == 0)
             ):
-            # print "we not coo"
             #  Error if incomplete form
             errorINCOMP = tk.Toplevel(bg = "white")
             errorINCOMP.grab_set()
@@ -465,6 +535,24 @@ class StudentRegistration(tk.Frame):
 
             self.wait_window(errorINCOMP)
             errorINCOMP.grab_release()
+
+        elif (len(registerCon) != 11 or len(registerEm) != 11 or
+            registerCon[3] != "-" or registerEm[3] != "-"
+            ):
+            #  Error if wrong format
+            errorFORMAT = tk.Toplevel(bg = "white")
+            errorFORMAT.grab_set()
+            errorFORMAT.title("Format Error")
+            errorFORMAT.resizable(False,False)
+
+            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white")
+            errorINCOMPmsg.pack(padx = 10, pady = 10)
+
+            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", bg = "white", command = errorFORMAT.destroy)
+            dismissButton.pack(padx = 10, pady = 10)
+
+            self.wait_window(errorFORMAT)
+            errorFORMAT.grab_release()
 
         else:
             # print "we coo"
@@ -542,15 +630,18 @@ class TutorRegistration(tk.Frame):
         self.configure(bg = "white")
         self.controller = controller
 
+        vcmdNum = (self.register(is_Phone), "%S")
+        vcmdLetter = (self.register(is_Letter), "%S")
+
         RegistrationTitle = tk.Label(self, text=" Tutor Registration", font = 22, bg = "white")
         RegistrationTitle.pack(padx = 10, pady = 10)
 
         NameOfTutorREGLabel = tk.Label(self, text = " Full Name", bg = "white")
-        NameOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = NameOfTutorREG)
+        NameOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = NameOfTutorREG, validate = "key", validatecommand = vcmdLetter)
         ConOfTutorREGLabel = tk.Label(self, text = "Contact", bg = "white")
-        ConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = ConOfTutorREG)
+        ConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = ConOfTutorREG, validate = "key", validatecommand = vcmdNum)
         EmConOfTutorREGLabel = tk.Label(self, text = "Emergency Contact", bg = "white")
-        EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG)
+        EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
         SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject", bg = "white")
 
         checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, bg = "white")
@@ -578,7 +669,7 @@ class TutorRegistration(tk.Frame):
         menuButton.pack(side = "bottom", padx = 10, pady = 10)
 
     def registertutor(self):
-        registerName = NameOfTutorREG.get()
+        registerName = NameOfTutorREG.get().upper()
         registerCon = ConOfTutorREG.get()
         registerEm = EmConOfTutorREG.get()
         registerTAddMath = TAddMathREG.get()
@@ -608,6 +699,24 @@ class TutorRegistration(tk.Frame):
 
                 self.wait_window(errorINCOMP)
                 errorINCOMP.grab_release()
+
+        elif (len(registerCon) != 11 or len(registerEm) != 11 or
+            registerCon[3] != "-" or registerEm[3] != "-"
+            ):
+            #  Error if wrong format
+            errorFORMAT = tk.Toplevel(bg = "white")
+            errorFORMAT.grab_set()
+            errorFORMAT.title("Format Error")
+            errorFORMAT.resizable(False,False)
+
+            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white")
+            errorINCOMPmsg.pack(padx = 10, pady = 10)
+
+            dismissButton = tk.Button(errorFORMAT, text = "Dismiss", bg = "white", command = errorFORMAT.destroy)
+            dismissButton.pack(padx = 10, pady = 10)
+
+            self.wait_window(errorFORMAT)
+            errorFORMAT.grab_release()
 
         else:
             # print "we coo"
