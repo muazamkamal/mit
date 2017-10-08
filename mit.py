@@ -190,17 +190,19 @@ class Login(tk.Frame):
         vcmdLower = (self.register(is_Lower), "%S")
 
         usernameLabel = tk.Label(self, text = "Username", fg="white", bg = "#800000")
+        usernameInstruction = tk.Label(self, text = "(Lower case letters only)", fg="white", font=('Roboto', '8'), bg = "#800000")
         usernameEntry = tk.Entry(self, width = 25, textvariable = usrnm, validate = "key", validatecommand = vcmdLower)
         passwordLabel = tk.Label(self, text = "Password", fg="white", bg = "#800000")
         passwordEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswd)
         passwordEntry.bind('<Return>', lambda event: self.auth())
 
         usernameLabel.pack()
+        usernameInstruction.pack()
         usernameEntry.pack()
         passwordLabel.pack()
         passwordEntry.pack()
 
-        submitButton = tk.Button(self, text="Login", command = lambda: self.auth(), width = 15, height = 2, bg = "white")
+        submitButton = tk.Button(self, text="Log In", command = lambda: self.auth(), width = 15, height = 2, bg = "white")
         submitButton.pack(padx = 10, pady = 10)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Welcome), width = 15, height = 2, bg = "white")
@@ -311,16 +313,18 @@ class Signup(tk.Frame):
         vcmdLower = (self.register(is_Lower), "%S")
 
         usernameREGLabel = tk.Label(self, text = "Username", fg="white", bg = "#800000")
+        usernameREGInstruction = tk.Label(self, text = "(Lower case letters only)", fg="white", font=('Roboto', '8'), bg = "#800000")
         usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG, validate = "key", validatecommand = vcmdLower)
         passwordREGLabel = tk.Label(self, text = "Password", fg="white", bg = "#800000")
         passwordREGEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswdREG)
 
         usernameREGLabel.pack()
+        usernameREGInstruction.pack()
         usernameREGEntry.pack()
         passwordREGLabel.pack()
         passwordREGEntry.pack()
 
-        signupButton = tk.Button(self, text="Signup", command = lambda: self.signup(), width = 15, height = 2, bg = "white")
+        signupButton = tk.Button(self, text="Sign Up", command = lambda: self.signup(), width = 15, height = 2, bg = "white")
         signupButton.pack(padx = 10, pady = 10)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(Welcome), width = 15, height = 2, bg = "white")
@@ -428,13 +432,13 @@ class MainMenu(tk.Frame):
         MenuTitle = tk.Label(self, text="Main Menu", font = 22, fg="white", bg = "#800000")
         MenuTitle.pack(padx = 10, pady = 10)
 
-        registrationButton = tk.Button(self, text="Registration", command = lambda: controller.show_frame(Registration), width = 15, height = 2, bg = "white")
+        registrationButton = tk.Button(self, text="Registration", command = lambda: controller.show_frame(Registration), width = 30, height = 3,font=('Roboto', '20'), bg = "white")
         registrationButton.pack(padx = 10, pady = 10)
 
-        studentButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(Student), width = 15, height = 2, bg = "white")
+        studentButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(Student), width = 30, height = 3,font=('Roboto', '20'), bg = "white")
         studentButton.pack(padx = 10, pady = 10)
 
-        studentButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(Tutor), width = 15, height = 2, bg = "white")
+        studentButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(Tutor), width = 30, height = 3,font=('Roboto', '20'), bg = "white")
         studentButton.pack(padx = 10, pady = 10)
 
         quitButton = tk.Button(self, text="Quit", command = lambda: quit(), width = 15, height = 2, bg = "white")
@@ -450,11 +454,11 @@ class Registration(tk.Frame):
         RegistrationTitle = tk.Label(self, text="Registration", font = 22, fg="white", bg = "#800000")
         RegistrationTitle.pack(padx = 10, pady = 10)
 
-        StudentRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(StudentRegistration), width = 15, height = 2, bg = "white")
+        StudentRegistrationButton = tk.Button(self, text="Student", command = lambda: controller.show_frame(StudentRegistration), width = 30, height = 3,font=('Roboto', '20'), bg = "white")
         StudentRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
 
-        TutorRegistrationButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(TutorRegistration), width = 15, height = 2, bg = "white")
+        TutorRegistrationButton = tk.Button(self, text="Tutor", command = lambda: controller.show_frame(TutorRegistration), width = 30, height = 3,font=('Roboto', '20'), bg = "white")
         TutorRegistrationButton.pack(side = "top", padx = 10, pady = 10)
 
         backButton = tk.Button(self, text="Back", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
@@ -481,9 +485,9 @@ class StudentRegistration(tk.Frame):
         EmConOfStudREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfStudREG, validate = "key", validatecommand = vcmdNum)
         SubOfStudREGLabel = tk.Label(self, text = "Subject :", fg="white", bg = "#800000")
 
-        checkbuttonAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=AddMathREG, bg = "white")
-        checkbuttonPhy = tk.Checkbutton(self, text="Physics", variable=PhyREG, bg = "white")
-        checkbuttonChem = tk.Checkbutton(self, text="Chemistry", variable=ChemREG, bg = "white")
+        checkbuttonAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=AddMathREG, width = 20, bg = "white")
+        checkbuttonPhy = tk.Checkbutton(self, text="Physics                              ", variable=PhyREG, width = 20, bg = "white")
+        checkbuttonChem = tk.Checkbutton(self, text="Chemistry                         ", variable=ChemREG, width =20, bg = "white")
 
         NameOfStudREGLabel.pack(padx = 10, pady = 8)
         NameOfStudREGEntry.pack(padx = 10, pady = 8)
@@ -558,16 +562,16 @@ class StudentRegistration(tk.Frame):
             # print "we coo"
 
             if registerAddMath == 1:
-                registerFees += 55.0
+                registerFees += 80.0
                 # print "addmath chosen"
 
             if registerPhy == 1:
                 # print "physics chosen"
-                registerFees += 40.0
+                registerFees += 80.0
 
             if registerChem == 1:
                 # print "chemistry chosen"
-                registerFees += 50.0
+                registerFees += 80.0
 
             registerOutFees = registerFees
 
@@ -644,9 +648,9 @@ class TutorRegistration(tk.Frame):
         EmConOfTutorREGEntry = tk.Entry(self, width = 25, textvariable = EmConOfTutorREG, validate = "key", validatecommand = vcmdNum)
         SubOfTutorREGLabel = tk.Label(self, text = "Teaching Subject :", fg="white", bg = "#800000")
 
-        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, bg = "white")
-        checkbuttonTPhy = tk.Checkbutton(self, text="Physics", variable=TPhyREG, bg = "white")
-        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry", variable=TChemREG, bg = "white")
+        checkbuttonTAddMath = tk.Checkbutton(self, text="Additional Mathematics", variable=TAddMathREG, width =20, bg = "white")
+        checkbuttonTPhy = tk.Checkbutton(self, text="Physics                              ", variable=TPhyREG, width =20, bg = "white")
+        checkbuttonTChem = tk.Checkbutton(self, text="Chemistry                         ", variable=TChemREG, width =20, bg = "white")
 
         NameOfTutorREGLabel.pack(padx = 10, pady = 8)
         NameOfTutorREGEntry.pack(padx = 10, pady = 8)
