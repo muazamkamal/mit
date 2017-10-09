@@ -333,6 +333,7 @@ class Signup(tk.Frame):
         usernameREGEntry = tk.Entry(self, width = 25, textvariable = usrnmREG, validate = "key", validatecommand = vcmdLower)
         passwordREGLabel = tk.Label(self, text = "Password", fg = "white", bg = "#3f51b5", font = subtitleFont)
         passwordREGEntry = tk.Entry(self, show = "*", width = 25, textvariable = pswdREG)
+        passwordREGEntry.bind('<Return>', lambda event: self.signup())
 
         usernameREGLabel.pack()
         usernameREGEntry.pack()
@@ -367,7 +368,59 @@ class Signup(tk.Frame):
             else:
                 duplicateUsrnm = 0
 
-        if signupUsrnm == "" or signupPswd == "":
+        if signupUsrnm != "" or signupPswd != "":
+            if duplicateUsrnm == 1:
+                # Error if username already exist
+                errorDUP = tk.Toplevel(bg = "white")
+                errorDUP.grab_set()
+                errorDUP.title("Sign up Error")
+                errorDUP.geometry("250x100")
+                errorDUP.resizable(False,False)
+
+                errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white", font = subtitleFont)
+                errorREGmsg.pack(padx = 10, pady = 10)
+
+                dismissButton = tk.Button(errorDUP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorDUP.destroy)
+                dismissButton.pack(padx = 10, pady = 10)
+
+                self.wait_window(errorDUP)
+                errorDUP.grab_release()
+
+                usrnmREG.set("")
+                pswdREG.set("")
+
+            else:
+                # Add new username and password to database
+                creds = open("credentialDB.txt","a+")
+                datatowrite = [signupUsrnm,signupPswd]
+                for data in datatowrite:
+                    creds.write(data + ", ")
+                creds.write("\n")
+
+                creds.close()
+
+                usrnmREG.set("")
+                pswdREG.set("")
+
+                # Redirect to Login frame
+                self.controller.show_frame(Welcome)
+
+                # Display success registration message
+                successREG = tk.Toplevel(bg = "white")
+                successREG.grab_set()
+                successREG.title("Registration Successful")
+                successREG.resizable(False,False)
+
+                successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white", font = subtitleFont)
+                successREGmsg.pack(padx = 10, pady = 10)
+
+                dismissButton = tk.Button(successREG, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = successREG.destroy)
+                dismissButton.pack(padx = 10, pady = 10)
+
+                self.wait_window(successREG)
+                successREG.grab_release()
+
+        else:
             # Error if no username/password entered by user
             errorREG = tk.Toplevel(bg = "white")
             errorREG.grab_set()
@@ -386,56 +439,75 @@ class Signup(tk.Frame):
             usrnmREG.set("")
             pswdREG.set("")
 
-        elif duplicateUsrnm == 1:
-            # Error if username already exist
-            errorDUP = tk.Toplevel(bg = "white")
-            errorDUP.grab_set()
-            errorDUP.title("Sign up Error")
-            errorDUP.geometry("250x100")
-            errorDUP.resizable(False,False)
-
-            errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white", font = subtitleFont)
-            errorREGmsg.pack(padx = 10, pady = 10)
-
-            dismissButton = tk.Button(errorDUP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorDUP.destroy)
-            dismissButton.pack(padx = 10, pady = 10)
-
-            self.wait_window(errorDUP)
-            errorDUP.grab_release()
-
-            usrnmREG.set("")
-            pswdREG.set("")
-
-        else:
-            # Add new username and password to database
-            creds = open("credentialDB.txt","a+")
-            datatowrite = [signupUsrnm,signupPswd]
-            for data in datatowrite:
-                creds.write(data + ", ")
-            creds.write("\n")
-
-            creds.close()
-
-            usrnmREG.set("")
-            pswdREG.set("")
-
-            # Redirect to Login frame
-            self.controller.show_frame(Welcome)
-
-            # Display success registration message
-            successREG = tk.Toplevel(bg = "white")
-            successREG.grab_set()
-            successREG.title("Registration Successful")
-            successREG.resizable(False,False)
-
-            successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white", font = subtitleFont)
-            successREGmsg.pack(padx = 10, pady = 10)
-
-            dismissButton = tk.Button(successREG, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = successREG.destroy)
-            dismissButton.pack(padx = 10, pady = 10)
-
-            self.wait_window(successREG)
-            successREG.grab_release()
+        # if signupUsrnm == "" or signupPswd == "":
+        #     # Error if no username/password entered by user
+        #     errorREG = tk.Toplevel(bg = "white")
+        #     errorREG.grab_set()
+        #     errorREG.title("Sign up Error")
+        #     errorREG.resizable(False,False)
+        #
+        #     errorREGmsg = tk.Label(errorREG, text = "Please enter your username/password!", bg = "white", font = subtitleFont)
+        #     errorREGmsg.pack(padx = 10, pady = 10)
+        #
+        #     dismissButton = tk.Button(errorREG, text = "Dismiss", width = 10, font = subbuttonFont, bg = "white", command = errorREG.destroy)
+        #     dismissButton.pack(padx = 10, pady = 10)
+        #
+        #     self.wait_window(errorREG)
+        #     errorREG.grab_release()
+        #
+        #     usrnmREG.set("")
+        #     pswdREG.set("")
+        #
+        # elif duplicateUsrnm == 1:
+        #     # Error if username already exist
+        #     errorDUP = tk.Toplevel(bg = "white")
+        #     errorDUP.grab_set()
+        #     errorDUP.title("Sign up Error")
+        #     errorDUP.geometry("250x100")
+        #     errorDUP.resizable(False,False)
+        #
+        #     errorREGmsg = tk.Label(errorDUP, text = "Username already exist!", bg = "white", font = subtitleFont)
+        #     errorREGmsg.pack(padx = 10, pady = 10)
+        #
+        #     dismissButton = tk.Button(errorDUP, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorDUP.destroy)
+        #     dismissButton.pack(padx = 10, pady = 10)
+        #
+        #     self.wait_window(errorDUP)
+        #     errorDUP.grab_release()
+        #
+        #     usrnmREG.set("")
+        #     pswdREG.set("")
+        #
+        # else:
+        #     # Add new username and password to database
+        #     creds = open("credentialDB.txt","a+")
+        #     datatowrite = [signupUsrnm,signupPswd]
+        #     for data in datatowrite:
+        #         creds.write(data + ", ")
+        #     creds.write("\n")
+        #
+        #     creds.close()
+        #
+        #     usrnmREG.set("")
+        #     pswdREG.set("")
+        #
+        #     # Redirect to Login frame
+        #     self.controller.show_frame(Welcome)
+        #
+        #     # Display success registration message
+        #     successREG = tk.Toplevel(bg = "white")
+        #     successREG.grab_set()
+        #     successREG.title("Registration Successful")
+        #     successREG.resizable(False,False)
+        #
+        #     successREGmsg = tk.Label(successREG, text = "Username \"%s\" has been successfully registered!" % signupUsrnm, bg = "white", font = subtitleFont)
+        #     successREGmsg.pack(padx = 10, pady = 10)
+        #
+        #     dismissButton = tk.Button(successREG, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = successREG.destroy)
+        #     dismissButton.pack(padx = 10, pady = 10)
+        #
+        #     self.wait_window(successREG)
+        #     successREG.grab_release()
 
 class MainMenu(tk.Frame):
     def __init__(self, parent, controller):
@@ -766,8 +838,6 @@ class TutorRegistration(tk.Frame):
 
             temp = dt.datetime.now()
             registerDate = "%s/%s/%s" % (temp.day, temp.month, temp.year)
-
-            
 
             TutorMonthPaid= str(temp.month)
             TutorYearPaid = str(temp.year)
