@@ -187,8 +187,8 @@ class Welcome(tk.Frame):
         registerButton = tk.Button(self, text = "Sign Up", command = lambda: controller.show_frame(Signup), width = 15, height = 2, font = buttonFont, bg = "white")
         registerButton.pack(side = "top", padx = 10, pady = 10)
 
-        testButton = tk.Button(self, text = "Developer's Mode", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
-        testButton.pack(side = "top", padx = 10, pady = 10)
+        # testButton = tk.Button(self, text = "Developer's Mode", command = lambda: controller.show_frame(MainMenu), width = 15, height = 2, bg = "white")
+        # testButton.pack(side = "top", padx = 10, pady = 10)
 
         quitButton = tk.Button(self, text = "Quit", command = lambda: quit(), width = 10, bg = "white", font = subbuttonFont)
         quitButton.pack(side = "bottom", pady = 10)
@@ -740,7 +740,7 @@ class TutorRegistration(tk.Frame):
             errorFORMAT.title("Format Error")
             errorFORMAT.resizable(False,False)
 
-            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"012-3456789\"", bg = "white", font = subtitleFont)
+            errorINCOMPmsg = tk.Label(errorFORMAT, text = "Wrong format for contact/emergency contact. Example: \"0123456789\"", bg = "white", font = subtitleFont)
             errorINCOMPmsg.pack(padx = 10, pady = 10)
 
             dismissButton = tk.Button(errorFORMAT, text = "Dismiss", width = 10, bg = "white", font = subbuttonFont, command = errorFORMAT.destroy)
@@ -810,8 +810,8 @@ class TutorRegistration(tk.Frame):
             successTutorREG.grab_release()
 
             NameOfTutorREG.set("")
-            ConOfTutorREG.set("0")
-            EmConOfTutorREG.set("0")
+            ConOfTutorREG.set("")
+            EmConOfTutorREG.set("")
             TAddMathREG.set(0)
             TPhyREG.set(0)
             TChemREG.set(0)
@@ -1023,6 +1023,8 @@ class StudentDetail(tk.Frame):
                 payment.set("")
 
                 OutFeeOfStud.set("Outstanding Fees: RM%s" % StudentData[index][4])
+
+                payButton.destroy()
 
                 doneButton = tk.Button(paymentwindow, text="Done", command = paymentwindow.destroy, width = 10, bg = "white", font = subbuttonFont)
                 doneButton.pack(side = "bottom", padx = 10, pady = 10)
@@ -1317,6 +1319,8 @@ class TutorDetail(tk.Frame):
                 salary.set("")
 
                 OutFeeOfTutor.set("Outstanding Fees: RM%s" % TutorData[counter][4])
+
+                payButton.destroy()
 
                 doneButton = tk.Button(salarywindow, text="Done", command = salarywindow.destroy, width = 10, bg = "white", font = subbuttonFont)
                 doneButton.pack(side = "bottom", padx = 10, pady = 10)
