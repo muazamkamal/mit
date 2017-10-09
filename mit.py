@@ -372,7 +372,6 @@ class Signup(tk.Frame):
             errorREG = tk.Toplevel(bg = "white")
             errorREG.grab_set()
             errorREG.title("Sign up Error")
-            errorREG.geometry("250x100")
             errorREG.resizable(False,False)
 
             errorREGmsg = tk.Label(errorREG, text = "Please enter your username/password!", bg = "white", font = subtitleFont)
@@ -597,14 +596,13 @@ class StudentRegistration(tk.Frame):
             registerOutFees = registerFees
 
             temp = dt.datetime.now()
-            today = "%s/%s/%s" % (temp.day, temp.month, temp.year)
+            registerDate = "%s/%s/%s" % (temp.day, temp.month, temp.year)
 
-            registerDate = today
 
             StudentMonthPaid= str(temp.month)
             StudentYearPaid = str(temp.year)
 
-            registerInput = [registerName, registerCon, registerEm, str(registerFees), str(registerOutFees), today, StudentMonthPaid, StudentYearPaid]
+            registerInput = [registerName, registerCon, registerEm, str(registerFees), str(registerOutFees), registerDate, StudentMonthPaid, StudentYearPaid]
 
             if registerAddMath == 1:
                 registerInput.append("Additional Mathematics")
@@ -704,16 +702,16 @@ class TutorRegistration(tk.Frame):
         registerName = NameOfTutorREG.get().upper()
         registerCon = ConOfTutorREG.get()
         registerEm = EmConOfTutorREG.get()
-        registerTAddMath = TAddMathREG.get()
-        registerTPhy = TPhyREG.get()
-        registerTChem = TChemREG.get()
+        registerAddMath = TAddMathREG.get()
+        registerPhy = TPhyREG.get()
+        registerChem = TChemREG.get()
         Salary = 0.0
 
         if (
             registerName == "" or registerCon == "" or
             registerEm == "" or
-            (registerTAddMath == 0 and registerTPhy == 0 and
-            registerTChem == 0)
+            (registerAddMath == 0 and registerPhy == 0 and
+            registerChem == 0)
             ):
             # print "we not coo"
             #  Error if incomplete form
@@ -752,37 +750,37 @@ class TutorRegistration(tk.Frame):
         else:
             # print "we coo"
 
-            if registerTAddMath == 1:
+            if registerAddMath == 1:
                 Salary += 350.0
                 # print "addmath chosen"
 
-            if registerTPhy == 1:
+            if registerPhy == 1:
                 # print "physics chosen"
                 Salary += 340.0
 
-            if registerTChem == 1:
+            if registerChem == 1:
                 # print "chemistry chosen"
                 Salary += 355.0
 
             OutstandingSalary = Salary
 
             temp = dt.datetime.now()
-            today = "%s/%s/%s" % (temp.day, temp.month, temp.year)
+            registerDate = "%s/%s/%s" % (temp.day, temp.month, temp.year)
 
-            registerDate = today
+            
 
             TutorMonthPaid= str(temp.month)
             TutorYearPaid = str(temp.year)
 
-            registerInput = [registerName, registerCon, registerEm, str(Salary), str(OutstandingSalary), today, TutorMonthPaid, TutorYearPaid, ]
+            registerInput = [registerName, registerCon, registerEm, str(Salary), str(OutstandingSalary), registerDate, TutorMonthPaid, TutorYearPaid, ]
 
-            if registerTAddMath == 1:
+            if registerAddMath == 1:
                 registerInput.append("Additional Mathematics")
 
-            if registerTPhy == 1:
+            if registerPhy == 1:
                 registerInput.append("Physics")
 
-            if registerTChem == 1:
+            if registerChem == 1:
                 registerInput.append("Chemistry")
 
             tutorREGDB = open("tutorDB.txt", "a+")
